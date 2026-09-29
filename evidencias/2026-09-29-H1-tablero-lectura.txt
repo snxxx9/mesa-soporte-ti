@@ -1,0 +1,364 @@
+Lectura de la interfaz de GitHub Projects
+Fecha de captura: 2026-09-29T17:19:08.806Z
+URL: https://github.com/users/snxxx9/projects/1/views/2?layout_template=board
+Esta es una lectura de la interfaz, no una exportación oficial TSV.
+
+- link "Skip to content":
+  - /url: "#start-of-content"
+- banner "Global navigation menu":
+  - button "Open menu":
+  - link "Homepage (g then d)":
+    - /url: /
+  - navigation "Breadcrumbs":
+    - list:
+      - button "2 more breadcrumb items":
+      - link "Mesa de Soporte TI · Evaluación 3":
+        - /url: /users/snxxx9/projects/1
+        - generic: Mesa de Soporte TI · Evaluación 3
+  - button "Open quick search dialog, type / to search (forward slash)":
+  - button "Create new...":
+  - link "You have no unread notifications (g then n)":
+    - /url: /notifications
+  - button "Open user navigation menu":
+    - img "User avatar"
+- main:
+  - navigation "Project":
+    - heading "Mesa de Soporte TI · Evaluación 3" [level=1]
+    - button "Add status update":
+      - generic: Add status update
+    - link "Insights":
+      - /url: /users/snxxx9/projects/1/insights
+      - generic: Insights
+    - link "Workflows (6 enabled)":
+      - /url: /users/snxxx9/projects/1/workflows
+      - generic: Workflows
+      - generic: "6"
+      - generic: (6)
+    - button "Project details":
+    - button "View more options":
+  - navigation "Select view":
+    - tablist:
+      - tab "View 1":
+        - generic: View 1
+      - tab "H1 · 29-09-2026 · Tareas" [selected]:
+        - generic: H1 · 29-09-2026 · Tareas
+      - tab "New view":
+        - generic: New view
+  - button "View options for H1 · 29-09-2026 · Tareas":
+  - tabpanel:
+    - region "View filters":
+      - form "Filter":
+        - generic: Filter
+        - img "Search"
+        - combobox "Filter"
+      - button "View":
+        - generic: View
+    - grid:
+      - row "Title Title column options Status Status column options Responsable Responsable column options Fecha objetivo Fecha objetivo column options Prioridad Prioridad column options Estimación h Estimación h column options Add field":
+        - cell
+        - columnheader "Title Title column options":
+          - generic: Title
+          - button "Title column options":
+          - separator
+        - columnheader "Status Status column options":
+          - generic: Status
+          - button "Status column options":
+          - separator
+        - columnheader "Responsable Responsable column options":
+          - generic: Responsable
+          - button "Responsable column options":
+          - separator
+        - columnheader "Fecha objetivo Fecha objetivo column options":
+          - generic: Fecha objetivo
+          - button "Fecha objetivo column options":
+          - separator
+        - columnheader "Prioridad Prioridad column options":
+          - generic: Prioridad
+          - button "Prioridad column options":
+          - separator
+        - columnheader "Estimación h Estimación h column options":
+          - generic: Estimación h
+          - button "Estimación h column options":
+          - separator
+        - columnheader "Add field":
+          - button "Add field":
+      - 'row "Row actions T01 · Revisar el problema de la organización, status: open En revisión/pruebas Dropdown button Sebastian Velasco 2026-09-29 Alta 0.25"':
+        - gridcell "Row actions":
+          - generic: "1"
+          - button "Row actions":
+        - 'rowheader "T01 · Revisar el problema de la organización, status: open"':
+          - img "Open issue"
+          - link "T01 · Revisar el problema de la organización":
+            - /url: https://github.com/snxxx9/mesa-soporte-ti/issues/1
+          - generic: "#1"
+          - button "Add sub-issue" [active]:
+          - generic: Add sub-issue
+        - gridcell "En revisión/pruebas Dropdown button":
+          - generic: En revisión/pruebas
+          - button "Dropdown button":
+        - gridcell "Sebastian Velasco":
+          - generic: Sebastian Velasco
+        - gridcell "2026-09-29":
+          - generic: 2026-09-29
+        - gridcell "Alta":
+          - generic: Alta
+        - gridcell "0.25":
+          - generic: "0.25"
+        - gridcell
+      - 'row "Row actions T02 · Revisar el objetivo del proyecto, status: open En revisión/pruebas Dropdown button Sebastian Velasco 2026-09-29 Alta 0.25"':
+        - gridcell "Row actions":
+          - generic: "2"
+          - button "Row actions":
+        - 'rowheader "T02 · Revisar el objetivo del proyecto, status: open"':
+          - img "Open issue"
+          - link "T02 · Revisar el objetivo del proyecto":
+            - /url: https://github.com/snxxx9/mesa-soporte-ti/issues/2
+          - generic: "#2"
+          - button "Add sub-issue":
+        - gridcell "En revisión/pruebas Dropdown button":
+          - generic: En revisión/pruebas
+          - button "Dropdown button":
+        - gridcell "Sebastian Velasco":
+          - generic: Sebastian Velasco
+        - gridcell "2026-09-29":
+          - generic: 2026-09-29
+        - gridcell "Alta":
+          - generic: Alta
+        - gridcell "0.25":
+          - generic: "0.25"
+        - gridcell
+      - 'row "Row actions T03 · Acordar alcance inicial y exclusiones, status: open En revisión/pruebas Dropdown button Sebastian Velasco 2026-09-29 Alta 0.5"':
+        - gridcell "Row actions":
+          - generic: "3"
+          - button "Row actions":
+        - 'rowheader "T03 · Acordar alcance inicial y exclusiones, status: open"':
+          - img "Open issue"
+          - link "T03 · Acordar alcance inicial y exclusiones":
+            - /url: https://github.com/snxxx9/mesa-soporte-ti/issues/3
+          - generic: "#3"
+          - button "Add sub-issue":
+        - gridcell "En revisión/pruebas Dropdown button":
+          - generic: En revisión/pruebas
+          - button "Dropdown button":
+        - gridcell "Sebastian Velasco":
+          - generic: Sebastian Velasco
+        - gridcell "2026-09-29":
+          - generic: 2026-09-29
+        - gridcell "Alta":
+          - generic: Alta
+        - gridcell "0.5":
+          - generic: "0.5"
+        - gridcell
+      - 'row "Row actions T04 · Revisar diez historias/requisitos, status: open En revisión/pruebas Dropdown button Sebastian Velasco 2026-09-29 Alta 0.5"':
+        - gridcell "Row actions":
+          - generic: "4"
+          - button "Row actions":
+        - 'rowheader "T04 · Revisar diez historias/requisitos, status: open"':
+          - img "Open issue"
+          - link "T04 · Revisar diez historias/requisitos":
+            - /url: https://github.com/snxxx9/mesa-soporte-ti/issues/4
+          - generic: "#4"
+          - button "Add sub-issue":
+        - gridcell "En revisión/pruebas Dropdown button":
+          - generic: En revisión/pruebas
+          - button "Dropdown button":
+        - gridcell "Sebastian Velasco":
+          - generic: Sebastian Velasco
+        - gridcell "2026-09-29":
+          - generic: 2026-09-29
+        - gridcell "Alta":
+          - generic: Alta
+        - gridcell "0.5":
+          - generic: "0.5"
+        - gridcell
+      - 'row "Row actions T05 · Crear repositorio y cargar material H1, status: open En curso Dropdown button Felipe Garces 2026-09-29 Alta 0.5"':
+        - gridcell "Row actions":
+          - generic: "5"
+          - button "Row actions":
+        - 'rowheader "T05 · Crear repositorio y cargar material H1, status: open"':
+          - img "Open issue"
+          - link "T05 · Crear repositorio y cargar material H1":
+            - /url: https://github.com/snxxx9/mesa-soporte-ti/issues/5
+          - generic: "#5"
+          - button "Add sub-issue":
+        - gridcell "En curso Dropdown button":
+          - generic: En curso
+          - button "Dropdown button":
+        - gridcell "Felipe Garces":
+          - generic: Felipe Garces
+        - gridcell "2026-09-29":
+          - generic: 2026-09-29
+        - gridcell "Alta":
+          - generic: Alta
+        - gridcell "0.5":
+          - generic: "0.5"
+        - gridcell
+      - 'row "Row actions T06 · Configurar tablero inicial de tareas, status: closed Hecho Dropdown button Sebastian Velasco 2026-09-29 Alta 0.5"':
+        - gridcell "Row actions":
+          - generic: "6"
+          - button "Row actions":
+        - 'rowheader "T06 · Configurar tablero inicial de tareas, status: closed"':
+          - img "Closed as completed issue"
+          - link "T06 · Configurar tablero inicial de tareas":
+            - /url: https://github.com/snxxx9/mesa-soporte-ti/issues/6
+          - generic: "#6"
+          - button "Add sub-issue":
+        - gridcell "Hecho Dropdown button":
+          - generic: Hecho
+          - button "Dropdown button":
+        - gridcell "Sebastian Velasco":
+          - generic: Sebastian Velasco
+        - gridcell "2026-09-29":
+          - generic: 2026-09-29
+        - gridcell "Alta":
+          - generic: Alta
+        - gridcell "0.5":
+          - generic: "0.5"
+        - gridcell
+      - 'row "Row actions T07 · Confirmar roles iniciales y rotación, status: open En revisión/pruebas Dropdown button Sebastian Velasco 2026-09-29 Alta 0.25"':
+        - gridcell "Row actions":
+          - generic: "7"
+          - button "Row actions":
+        - 'rowheader "T07 · Confirmar roles iniciales y rotación, status: open"':
+          - img "Open issue"
+          - link "T07 · Confirmar roles iniciales y rotación":
+            - /url: https://github.com/snxxx9/mesa-soporte-ti/issues/7
+          - generic: "#7"
+          - button "Add sub-issue":
+        - gridcell "En revisión/pruebas Dropdown button":
+          - generic: En revisión/pruebas
+          - button "Dropdown button":
+        - gridcell "Sebastian Velasco":
+          - generic: Sebastian Velasco
+        - gridcell "2026-09-29":
+          - generic: 2026-09-29
+        - gridcell "Alta":
+          - generic: Alta
+        - gridcell "0.25":
+          - generic: "0.25"
+        - gridcell
+      - 'row "Row actions T08 · Revisar cronograma preliminar de hitos, status: open En revisión/pruebas Dropdown button Sebastian Velasco 2026-09-29 Alta 0.25"':
+        - gridcell "Row actions":
+          - generic: "8"
+          - button "Row actions":
+        - 'rowheader "T08 · Revisar cronograma preliminar de hitos, status: open"':
+          - img "Open issue"
+          - link "T08 · Revisar cronograma preliminar de hitos":
+            - /url: https://github.com/snxxx9/mesa-soporte-ti/issues/8
+          - generic: "#8"
+          - button "Add sub-issue":
+        - gridcell "En revisión/pruebas Dropdown button":
+          - generic: En revisión/pruebas
+          - button "Dropdown button":
+        - gridcell "Sebastian Velasco":
+          - generic: Sebastian Velasco
+        - gridcell "2026-09-29":
+          - generic: 2026-09-29
+        - gridcell "Alta":
+          - generic: Alta
+        - gridcell "0.25":
+          - generic: "0.25"
+        - gridcell
+      - 'row "Row actions T09 · Revisar modelo conceptual de datos, status: open En revisión/pruebas Dropdown button Jeremmy Vidal 2026-09-29 Alta 0.5"':
+        - gridcell "Row actions":
+          - generic: "9"
+          - button "Row actions":
+        - 'rowheader "T09 · Revisar modelo conceptual de datos, status: open"':
+          - img "Open issue"
+          - link "T09 · Revisar modelo conceptual de datos":
+            - /url: https://github.com/snxxx9/mesa-soporte-ti/issues/9
+          - generic: "#9"
+          - button "Add sub-issue":
+        - gridcell "En revisión/pruebas Dropdown button":
+          - generic: En revisión/pruebas
+          - button "Dropdown button":
+        - gridcell "Jeremmy Vidal":
+          - generic: Jeremmy Vidal
+        - gridcell "2026-09-29":
+          - generic: 2026-09-29
+        - gridcell "Alta":
+          - generic: Alta
+        - gridcell "0.5":
+          - generic: "0.5"
+        - gridcell
+      - 'row "Row actions T10 · Revisar bocetos iniciales de pantallas, status: open En revisión/pruebas Dropdown button Felipe Garces 2026-09-29 Alta 0.5"':
+        - gridcell "Row actions":
+          - generic: "10"
+          - button "Row actions":
+        - 'rowheader "T10 · Revisar bocetos iniciales de pantallas, status: open"':
+          - img "Open issue"
+          - link "T10 · Revisar bocetos iniciales de pantallas":
+            - /url: https://github.com/snxxx9/mesa-soporte-ti/issues/10
+          - generic: "#10"
+          - button "Add sub-issue":
+        - gridcell "En revisión/pruebas Dropdown button":
+          - generic: En revisión/pruebas
+          - button "Dropdown button":
+        - gridcell "Felipe Garces":
+          - generic: Felipe Garces
+        - gridcell "2026-09-29":
+          - generic: 2026-09-29
+        - gridcell "Alta":
+          - generic: Alta
+        - gridcell "0.5":
+          - generic: "0.5"
+        - gridcell
+      - 'row "Row actions T11 · Revisar arquitectura inicial propuesta, status: open En revisión/pruebas Dropdown button Felipe Garces 2026-09-29 Alta 0.25"':
+        - gridcell "Row actions":
+          - generic: "11"
+          - button "Row actions":
+        - 'rowheader "T11 · Revisar arquitectura inicial propuesta, status: open"':
+          - img "Open issue"
+          - link "T11 · Revisar arquitectura inicial propuesta":
+            - /url: https://github.com/snxxx9/mesa-soporte-ti/issues/11
+          - generic: "#11"
+          - button "Add sub-issue":
+        - gridcell "En revisión/pruebas Dropdown button":
+          - generic: En revisión/pruebas
+          - button "Dropdown button":
+        - gridcell "Felipe Garces":
+          - generic: Felipe Garces
+        - gridcell "2026-09-29":
+          - generic: 2026-09-29
+        - gridcell "Alta":
+          - generic: Alta
+        - gridcell "0.25":
+          - generic: "0.25"
+        - gridcell
+      - 'row "Row actions T12 · Conservar captura y minuta de H1, status: open En curso Dropdown button Sebastian Velasco 2026-09-29 Alta 0.5"':
+        - gridcell "Row actions":
+          - generic: "12"
+          - button "Row actions":
+        - 'rowheader "T12 · Conservar captura y minuta de H1, status: open"':
+          - img "Open issue"
+          - link "T12 · Conservar captura y minuta de H1":
+            - /url: https://github.com/snxxx9/mesa-soporte-ti/issues/12
+          - generic: "#12"
+          - button "Add sub-issue":
+        - gridcell "En curso Dropdown button":
+          - generic: En curso
+          - button "Dropdown button":
+        - gridcell "Sebastian Velasco":
+          - generic: Sebastian Velasco
+        - gridcell "2026-09-29":
+          - generic: 2026-09-29
+        - gridcell "Alta":
+          - generic: Alta
+        - gridcell "0.5":
+          - generic: "0.5"
+        - gridcell
+      - row "Create new item or add existing item":
+        - cell "Create new item or add existing item":
+          - button "Create new item or add existing item":
+        - cell:
+          - text: You can use
+          - generic: control
+          - generic: Control
+          - generic: +
+          - generic: space
+          - generic: Space
+          - text: to add an item
+          - combobox "Start typing to create an item, or type hashtag to select a repository"
+- status
+- status
+- generic: "List updated, Focused item: undefined, not selected, 1 of 1"
