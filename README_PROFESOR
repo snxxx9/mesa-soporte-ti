@@ -1,0 +1,80 @@
+# README PROFESOR
+
+## Mesa de Soporte TI
+
+Proyecto desarrollado por Sebastian Velasco, Felipe Garces y Jeremmy Vidal para la Evaluación 3 de Gestión de Proyectos Informáticos.
+
+El sistema corresponde a una Mesa de Soporte TI desarrollada con Python, Flask, SQLite, HTML y CSS. Hasta el Hito 3 se encuentra funcionando el MVP v0.1, el cual permite registrar solicitudes de soporte, generar automáticamente un ID y fecha de creación, listar los tickets registrados, asignar un responsable y cambiar el estado entre Nuevo, En proceso, Resuelto y Cerrado. La información queda almacenada en SQLite, por lo que los tickets permanecen guardados aunque la aplicación se cierre.
+
+## Cómo ejecutar el proyecto
+
+1. Descargar o clonar el repositorio:
+
+`git clone https://github.com/snxxx9/mesa-soporte-ti.git`
+
+2. Entrar a la carpeta del proyecto:
+
+`cd mesa-soporte-ti`
+
+3. Crear el entorno virtual:
+
+`python -m venv .venv`
+
+4. Activarlo en PowerShell:
+
+`.\.venv\Scripts\Activate.ps1`
+
+Si PowerShell bloquea la activación, ejecutar primero:
+
+`Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`
+
+y después volver a ejecutar:
+
+`.\.venv\Scripts\Activate.ps1`
+
+5. Instalar las dependencias:
+
+`pip install -r requirements.txt`
+
+6. Iniciar la aplicación:
+
+`python app.py`
+
+7. Abrir en el navegador:
+
+`http://127.0.0.1:5000`
+
+La terminal debe mantenerse abierta mientras se utiliza la aplicación. Para detenerla se debe presionar `Ctrl + C`.
+
+## Prueba rápida
+
+Para comprobar el funcionamiento se puede crear una nueva solicitud completando solicitante, título, descripción, categoría y prioridad. Al guardarla, el sistema generará automáticamente su ID, fecha de creación y estado inicial “Nuevo”.
+
+Desde el listado principal se puede entrar en “Ver ticket”, asignar un responsable y cambiar su estado, por ejemplo, de “Nuevo” a “En proceso”.
+
+Para comprobar la persistencia se puede cerrar Flask con `Ctrl + C`, volver a ejecutar `python app.py` y entrar nuevamente a `http://127.0.0.1:5000`. Los tickets creados anteriormente deberían continuar almacenados.
+
+El formulario también cuenta con validaciones, por lo que no permite registrar una solicitud si faltan campos obligatorios.
+
+## Archivos importantes
+
+- `app.py`: aplicación principal.
+- `database/schema.sql`: estructura de la base de datos.
+- `docs/PRUEBAS-H3.md`: pruebas funcionales realizadas.
+- `docs/REPORTE-AVANCE-H3.md`: Reporte de Avance N.º 1.
+- `evidencias/`: capturas de los distintos hitos.
+- `requirements.txt`: dependencias necesarias para ejecutar el proyecto.
+
+## Estado actual
+
+H1: Inicio y planificación del proyecto.  
+H2: Línea base, backlog, modelo de datos, arquitectura y plan de pruebas.  
+H3: MVP funcional v0.1 con RF-01 a RF-04, persistencia, pruebas, bloqueo registrado y actualización del tablero.
+
+Las funciones de filtros y resumen de solicitudes corresponden a los siguientes avances del proyecto.
+
+## Enlaces
+
+Repositorio: https://github.com/snxxx9/mesa-soporte-ti
+
+Tablero GitHub Projects: https://github.com/users/snxxx9/projects/1
