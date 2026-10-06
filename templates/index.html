@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Solicitudes | Mesa de Soporte TI{% endblock %}
+
+{% block contenido %}
+
+<section>
+    <h2>Solicitudes de soporte</h2>
+
+    <p>
+        Desde aquí podemos revisar y administrar los tickets registrados.
+    </p>
+
+    <a href="{{ url_for('nuevo_ticket') }}">
+        Registrar nueva solicitud
+    </a>
+</section>
+
+<hr>
+
+<section>
+    <h3>Tickets registrados</h3>
+
+    {% if tickets %}
+
+        <table border="1" cellpadding="8">
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Solicitante</th>
+                    <th>Categoría</th>
+                    <th>Prioridad</th>
+                    <th>Estado</th>
+                    <th>Responsable</th>
+                    <th>Fecha</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for ticket in tickets %}
+
+                    <tr>
+                        <td>{{ ticket.id }}</td>
+                        <td>{{ ticket.titulo }}</td>
+                        <td>{{ ticket.solicitante }}</td>
+                        <td>{{ ticket.categoria }}</td>
+                        <td>{{ ticket.prioridad }}</td>
+                        <td>{{ ticket.estado }}</td>
+
+                        <td>
+                            {{ ticket.responsable or "Sin asignar" }}
+                        </td>
+
+                        <td>{{ ticket.fecha_creacion }}</td>
+
+                        <td>
+                            <a href="{{ url_for('detalle_ticket', ticket_id=ticket.id) }}">
+                                Ver ticket
+                            </a>
+                        </td>
+                    </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    {% else %}
+
+        <p>Todavía no hay solicitudes registradas.</p>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

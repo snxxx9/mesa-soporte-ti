@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}Nueva solicitud | Mesa de Soporte TI{% endblock %}
+
+{% block contenido %}
+
+<section>
+    <h2>Nueva solicitud de soporte</h2>
+    <p>Completa los datos para registrar un nuevo ticket.</p>
+
+    {% if error %}
+        <p><strong>{{ error }}</strong></p>
+    {% endif %}
+
+    <form method="POST">
+
+        <div>
+            <label for="solicitante">Solicitante</label><br>
+            <input
+                type="text"
+                id="solicitante"
+                name="solicitante"
+                required
+            >
+        </div>
+
+        <br>
+
+        <div>
+            <label for="titulo">Título</label><br>
+            <input
+                type="text"
+                id="titulo"
+                name="titulo"
+                required
+            >
+        </div>
+
+        <br>
+
+        <div>
+            <label for="descripcion">Descripción</label><br>
+            <textarea
+                id="descripcion"
+                name="descripcion"
+                rows="5"
+                required
+            ></textarea>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="categoria_id">Categoría</label><br>
+
+            <select
+                id="categoria_id"
+                name="categoria_id"
+                required
+            >
+                <option value="">Seleccionar categoría</option>
+
+                {% for categoria in categorias %}
+                    <option value="{{ categoria.id }}">
+                        {{ categoria.nombre }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="prioridad">Prioridad</label><br>
+
+            <select
+                id="prioridad"
+                name="prioridad"
+                required
+            >
+                <option value="">Seleccionar prioridad</option>
+                <option value="Baja">Baja</option>
+                <option value="Media">Media</option>
+                <option value="Alta">Alta</option>
+            </select>
+        </div>
+
+        <br>
+
+        <button type="submit">Registrar solicitud</button>
+
+        <a href="{{ url_for('inicio') }}">
+            Volver
+        </a>
+
+    </form>
+</section>
+
+{% endblock %}

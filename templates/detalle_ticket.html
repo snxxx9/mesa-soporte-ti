@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}Ticket #{{ ticket.id }} | Mesa de Soporte TI{% endblock %}
+
+{% block contenido %}
+
+<section>
+    <h2>Ticket #{{ ticket.id }}</h2>
+
+    <p><strong>Título:</strong> {{ ticket.titulo }}</p>
+
+    <p>
+        <strong>Descripción:</strong><br>
+        {{ ticket.descripcion }}
+    </p>
+
+    <p><strong>Solicitante:</strong> {{ ticket.solicitante }}</p>
+    <p><strong>Categoría:</strong> {{ ticket.categoria }}</p>
+    <p><strong>Prioridad:</strong> {{ ticket.prioridad }}</p>
+    <p><strong>Fecha de creación:</strong> {{ ticket.fecha_creacion }}</p>
+
+    <p>
+        <strong>Responsable actual:</strong>
+        {{ ticket.responsable or "Sin asignar" }}
+    </p>
+
+    <p>
+        <strong>Estado actual:</strong>
+        {{ ticket.estado }}
+    </p>
+</section>
+
+<hr>
+
+<section>
+    <h3>Actualizar ticket</h3>
+
+    {% if error %}
+        <p><strong>{{ error }}</strong></p>
+    {% endif %}
+
+    <form method="POST">
+
+        <div>
+            <label for="responsable_id">Responsable</label><br>
+
+            <select id="responsable_id" name="responsable_id">
+
+                <option value="">Sin asignar</option>
+
+                {% for responsable in responsables %}
+
+                    <option
+                        value="{{ responsable.id }}"
+                        {% if ticket.responsable_id == responsable.id %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ responsable.nombre }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="estado">Estado</label><br>
+
+            <select id="estado" name="estado" required>
+
+                <option
+                    value="Nuevo"
+                    {% if ticket.estado == "Nuevo" %}selected{% endif %}
+                >
+                    Nuevo
+                </option>
+
+                <option
+                    value="En proceso"
+                    {% if ticket.estado == "En proceso" %}selected{% endif %}
+                >
+                    En proceso
+                </option>
+
+                <option
+                    value="Resuelto"
+                    {% if ticket.estado == "Resuelto" %}selected{% endif %}
+                >
+                    Resuelto
+                </option>
+
+                <option
+                    value="Cerrado"
+                    {% if ticket.estado == "Cerrado" %}selected{% endif %}
+                >
+                    Cerrado
+                </option>
+
+            </select>
+        </div>
+
+        <br>
+
+        <button type="submit">
+            Guardar cambios
+        </button>
+
+        <a href="{{ url_for('inicio') }}">
+            Volver al listado
+        </a>
+
+    </form>
+</section>
+
+{% endblock %}
