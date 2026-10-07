@@ -30,7 +30,18 @@ def init_db():
 def inicio():
     conexion = get_db()
 
-    tickets = conexion.execute("""
+    # Filtros RF-05
+    estado = request.args.get("estado", "").strip()
+    prioridad = request.args.get("prioridad", "").strip()
+    categoria_id = request.args.get("categoria", "").strip()
+
+    categorias = conexion.execute("""
+        SELECT id, nombre
+        FROM categorias
+        ORDER BY nombre
+    """).fetchall()
+
+    consulta = """
         SELECT
             t.id,
             t.titulo,
@@ -44,12 +55,52 @@ def inicio():
         JOIN usuarios u ON t.solicitante_id = u.id
         JOIN categorias c ON t.categoria_id = c.id
         LEFT JOIN usuarios r ON t.responsable_id = r.id
-        ORDER BY t.id DESC
-    """).fetchall()
+        WHERE 1 = 1
+    """
+
+    parametros = []
+
+    if estado:
+        consulta += " AND t.estado = ?"
+        parametros.append(estado)
+
+    if prioridad:
+        consulta += " AND t.prioridad = ?"
+        parametros.append(prioridad)
+
+    if categoria_id:
+        consulta += " AND t.categoria_id = ?"
+        parametros.append(categoria_id)
+
+    consulta += " ORDER BY t.id DESC"
+
+    tickets = conexion.execute(
+        consulta,
+        parametros
+    ).fetchall()
+
+    # Resumen RF-06
+    resumen = conexion.execute("""
+        SELECT
+            COUNT(*) AS total,
+            SUM(CASE WHEN estado = 'Nuevo' THEN 1 ELSE 0 END) AS nuevos,
+            SUM(CASE WHEN estado = 'En proceso' THEN 1 ELSE 0 END) AS en_proceso,
+            SUM(CASE WHEN estado = 'Resuelto' THEN 1 ELSE 0 END) AS resueltos,
+            SUM(CASE WHEN estado = 'Cerrado' THEN 1 ELSE 0 END) AS cerrados
+        FROM tickets
+    """).fetchone()
 
     conexion.close()
 
-    return render_template("index.html", tickets=tickets)
+    return render_template(
+        "index.html",
+        tickets=tickets,
+        categorias=categorias,
+        filtro_estado=estado,
+        filtro_prioridad=prioridad,
+        filtro_categoria=categoria_id,
+        resumen=resumen
+    )
 
 
 @app.route("/nuevo", methods=["GET", "POST"])
@@ -69,7 +120,13 @@ def nuevo_ticket():
         categoria_id = request.form.get("categoria_id", "").strip()
         prioridad = request.form.get("prioridad", "").strip()
 
-        if not solicitante or not titulo or not descripcion or not categoria_id or not prioridad:
+        if (
+            not solicitante
+            or not titulo
+            or not descripcion
+            or not categoria_id
+            or not prioridad
+        ):
             error = "Debes completar todos los campos."
 
         elif prioridad not in ("Baja", "Media", "Alta"):
@@ -197,11 +254,17 @@ def detalle_ticket(ticket_id):
 
             if error is None:
                 if ticket["responsable_id"] != nuevo_responsable_id:
-                    responsable_anterior = ticket["responsable"] or "Sin asignar"
+                    responsable_anterior = (
+                        ticket["responsable"] or "Sin asignar"
+                    )
 
                     if nuevo_responsable_id:
                         responsable_nuevo = conexion.execute(
-                            "SELECT nombre FROM usuarios WHERE id = ?",
+                            """
+                            SELECT nombre
+                            FROM usuarios
+                            WHERE id = ?
+                            """,
                             (nuevo_responsable_id,)
                         ).fetchone()["nombre"]
                     else:
@@ -250,7 +313,10 @@ def detalle_ticket(ticket_id):
                 conexion.close()
 
                 return redirect(
-                    url_for("detalle_ticket", ticket_id=ticket_id)
+                    url_for(
+                        "detalle_ticket",
+                        ticket_id=ticket_id
+                    )
                 )
 
     conexion.close()

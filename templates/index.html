@@ -19,60 +19,184 @@
 <hr>
 
 <section>
+    <h3>Resumen de solicitudes</h3>
+
+    <div class="resumen-grid">
+
+        <div class="resumen-card">
+            <strong>Total</strong>
+            <span>{{ resumen.total }}</span>
+        </div>
+
+        <div class="resumen-card">
+            <strong>Nuevo</strong>
+            <span>{{ resumen.nuevos }}</span>
+        </div>
+
+        <div class="resumen-card">
+            <strong>En proceso</strong>
+            <span>{{ resumen.en_proceso }}</span>
+        </div>
+
+        <div class="resumen-card">
+            <strong>Resuelto</strong>
+            <span>{{ resumen.resueltos }}</span>
+        </div>
+
+        <div class="resumen-card">
+            <strong>Cerrado</strong>
+            <span>{{ resumen.cerrados }}</span>
+        </div>
+
+    </div>
+</section>
+
+<hr>
+
+<section>
+    <h3>Filtrar solicitudes</h3>
+
+    <form method="GET" action="{{ url_for('inicio') }}">
+
+        <label for="estado">Estado</label>
+        <select name="estado" id="estado">
+            <option value="">Todos los estados</option>
+
+            <option value="Nuevo"
+                {% if filtro_estado == "Nuevo" %}selected{% endif %}>
+                Nuevo
+            </option>
+
+            <option value="En proceso"
+                {% if filtro_estado == "En proceso" %}selected{% endif %}>
+                En proceso
+            </option>
+
+            <option value="Resuelto"
+                {% if filtro_estado == "Resuelto" %}selected{% endif %}>
+                Resuelto
+            </option>
+
+            <option value="Cerrado"
+                {% if filtro_estado == "Cerrado" %}selected{% endif %}>
+                Cerrado
+            </option>
+        </select>
+
+        <br><br>
+
+        <label for="prioridad">Prioridad</label>
+        <select name="prioridad" id="prioridad">
+            <option value="">Todas las prioridades</option>
+
+            <option value="Baja"
+                {% if filtro_prioridad == "Baja" %}selected{% endif %}>
+                Baja
+            </option>
+
+            <option value="Media"
+                {% if filtro_prioridad == "Media" %}selected{% endif %}>
+                Media
+            </option>
+
+            <option value="Alta"
+                {% if filtro_prioridad == "Alta" %}selected{% endif %}>
+                Alta
+            </option>
+        </select>
+
+        <br><br>
+
+        <label for="categoria">Categoría</label>
+        <select name="categoria" id="categoria">
+            <option value="">Todas las categorías</option>
+
+            {% for categoria in categorias %}
+
+                <option value="{{ categoria.id }}"
+                    {% if filtro_categoria == categoria.id|string %}
+                        selected
+                    {% endif %}>
+                    {{ categoria.nombre }}
+                </option>
+
+            {% endfor %}
+        </select>
+
+        <br><br>
+
+        <button type="submit">
+            Aplicar filtros
+        </button>
+
+        <a href="{{ url_for('inicio') }}">
+            Limpiar filtros
+        </a>
+
+    </form>
+</section>
+
+<hr>
+
+<section>
     <h3>Tickets registrados</h3>
 
     {% if tickets %}
 
-        <table border="1" cellpadding="8">
+        <div class="tabla-responsive">
 
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Título</th>
-                    <th>Solicitante</th>
-                    <th>Categoría</th>
-                    <th>Prioridad</th>
-                    <th>Estado</th>
-                    <th>Responsable</th>
-                    <th>Fecha</th>
-                    <th>Acción</th>
-                </tr>
-            </thead>
+            <table>
 
-            <tbody>
-
-                {% for ticket in tickets %}
-
+                <thead>
                     <tr>
-                        <td>{{ ticket.id }}</td>
-                        <td>{{ ticket.titulo }}</td>
-                        <td>{{ ticket.solicitante }}</td>
-                        <td>{{ ticket.categoria }}</td>
-                        <td>{{ ticket.prioridad }}</td>
-                        <td>{{ ticket.estado }}</td>
-
-                        <td>
-                            {{ ticket.responsable or "Sin asignar" }}
-                        </td>
-
-                        <td>{{ ticket.fecha_creacion }}</td>
-
-                        <td>
-                            <a href="{{ url_for('detalle_ticket', ticket_id=ticket.id) }}">
-                                Ver ticket
-                            </a>
-                        </td>
+                        <th>ID</th>
+                        <th>Título</th>
+                        <th>Solicitante</th>
+                        <th>Categoría</th>
+                        <th>Prioridad</th>
+                        <th>Estado</th>
+                        <th>Responsable</th>
+                        <th>Fecha</th>
+                        <th>Acción</th>
                     </tr>
+                </thead>
 
-                {% endfor %}
+                <tbody>
 
-            </tbody>
+                    {% for ticket in tickets %}
 
-        </table>
+                        <tr>
+                            <td>{{ ticket.id }}</td>
+                            <td>{{ ticket.titulo }}</td>
+                            <td>{{ ticket.solicitante }}</td>
+                            <td>{{ ticket.categoria }}</td>
+                            <td>{{ ticket.prioridad }}</td>
+                            <td>{{ ticket.estado }}</td>
+
+                            <td>
+                                {{ ticket.responsable or "Sin asignar" }}
+                            </td>
+
+                            <td>{{ ticket.fecha_creacion }}</td>
+
+                            <td>
+                                <a href="{{ url_for('detalle_ticket', ticket_id=ticket.id) }}">
+                                    Ver ticket
+                                </a>
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
 
     {% else %}
 
-        <p>Todavía no hay solicitudes registradas.</p>
+        <p>No se encontraron solicitudes con los filtros seleccionados.</p>
 
     {% endif %}
 

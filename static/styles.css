@@ -7,6 +7,7 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     background: #f4f6f8;
     color: #222;
+    overflow-x: hidden;
 }
 
 .contenedor {
@@ -55,10 +56,18 @@ a {
     color: #2563eb;
 }
 
+/* Tabla de tickets */
+
+.tabla-responsive {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
 table {
     width: 100%;
+    min-width: 900px;
     border-collapse: collapse;
-    margin-top: 20px;
 }
 
 th {
@@ -76,6 +85,8 @@ td {
 tr:nth-child(even) {
     background: #f9fafb;
 }
+
+/* Formularios */
 
 form {
     max-width: 650px;
@@ -119,4 +130,64 @@ hr {
     border: 0;
     border-top: 1px solid #e5e7eb;
     margin: 25px 0;
+}
+
+/* Resumen RF-06 */
+
+.resumen-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.resumen-card {
+    background: #f8fafc;
+    border: 1px solid #dbe3ec;
+    border-radius: 8px;
+    padding: 18px;
+    text-align: center;
+}
+
+.resumen-card strong {
+    display: block;
+    color: #1f2937;
+    margin-bottom: 10px;
+}
+
+.resumen-card span {
+    display: block;
+    font-size: 28px;
+    font-weight: bold;
+    color: #2563eb;
+}
+
+/* Ajustes para pantallas más pequeñas */
+
+@media (max-width: 900px) {
+    .resumen-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    main {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 550px) {
+    .resumen-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .contenedor {
+        width: 96%;
+    }
+
+    header h1 {
+        font-size: 22px;
+    }
+
+    main {
+        padding: 15px;
+    }
 }
