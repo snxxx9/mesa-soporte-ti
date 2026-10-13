@@ -1,10 +1,24 @@
 # README PROFESOR
 
-## Mesa de Soporte TI
+## Mesa de Soporte TI – MVP v1.0
 
 Proyecto desarrollado por Sebastian Velasco, Felipe Garces y Jeremmy Vidal para la Evaluación 3 de Gestión de Proyectos Informáticos.
 
-El sistema corresponde a una Mesa de Soporte TI desarrollada con Python, Flask, SQLite, HTML y CSS. Hasta el Hito 3 se encuentra funcionando el MVP v0.1, el cual permite registrar solicitudes de soporte, generar automáticamente un ID y fecha de creación, listar los tickets registrados, asignar un responsable y cambiar el estado entre Nuevo, En proceso, Resuelto y Cerrado. La información queda almacenada en SQLite, por lo que los tickets permanecen guardados aunque la aplicación se cierre.
+El sistema corresponde a una Mesa de Soporte TI desarrollada con Python, Flask, SQLite, HTML y CSS. La versión final permite registrar solicitudes de soporte, generar automáticamente un ID y fecha de creación, visualizar los tickets, asignar responsables, cambiar estados, filtrar solicitudes y consultar un resumen general por estado.
+
+La información queda almacenada mediante SQLite, por lo que los tickets permanecen guardados aunque la aplicación se cierre y posteriormente se vuelva a ejecutar.
+
+## Funciones implementadas
+
+- RF-01: Registro de solicitudes con solicitante, título, descripción, categoría y prioridad.
+- RF-02: Generación automática de ID único y fecha de creación.
+- RF-03: Listado de solicitudes mostrando estado, prioridad y responsable.
+- RF-04: Asignación de responsable y cambio de estado entre Nuevo, En proceso, Resuelto y Cerrado.
+- RF-05: Filtros por estado, prioridad y categoría.
+- RF-06: Resumen con cantidad total de solicitudes y cantidad por estado.
+- Persistencia de información mediante SQLite.
+- Validaciones de campos obligatorios.
+- Registro de cambios relevantes realizados sobre los tickets.
 
 ## Cómo ejecutar el proyecto
 
@@ -20,7 +34,7 @@ El sistema corresponde a una Mesa de Soporte TI desarrollada con Python, Flask, 
 
 `python -m venv .venv`
 
-4. Activarlo en PowerShell:
+4. Activar el entorno virtual en PowerShell:
 
 `.\.venv\Scripts\Activate.ps1`
 
@@ -28,7 +42,7 @@ Si PowerShell bloquea la activación, ejecutar primero:
 
 `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`
 
-y después volver a ejecutar:
+Luego volver a ejecutar:
 
 `.\.venv\Scripts\Activate.ps1`
 
@@ -46,35 +60,64 @@ y después volver a ejecutar:
 
 La terminal debe mantenerse abierta mientras se utiliza la aplicación. Para detenerla se debe presionar `Ctrl + C`.
 
-## Prueba rápida
+## Prueba rápida del sistema
 
-Para comprobar el funcionamiento se puede crear una nueva solicitud completando solicitante, título, descripción, categoría y prioridad. Al guardarla, el sistema generará automáticamente su ID, fecha de creación y estado inicial “Nuevo”.
+Para comprobar el funcionamiento se puede registrar una nueva solicitud completando los campos solicitante, título, descripción, categoría y prioridad.
 
-Desde el listado principal se puede entrar en “Ver ticket”, asignar un responsable y cambiar su estado, por ejemplo, de “Nuevo” a “En proceso”.
+Al guardar el ticket, el sistema genera automáticamente su ID, fecha de creación y estado inicial “Nuevo”.
 
-Para comprobar la persistencia se puede cerrar Flask con `Ctrl + C`, volver a ejecutar `python app.py` y entrar nuevamente a `http://127.0.0.1:5000`. Los tickets creados anteriormente deberían continuar almacenados.
+Desde el listado principal se puede abrir el detalle del ticket, asignar un responsable y modificar su estado.
 
-El formulario también cuenta con validaciones, por lo que no permite registrar una solicitud si faltan campos obligatorios.
+En la pantalla principal también se pueden utilizar los filtros por estado, prioridad y categoría. Además, se muestra un resumen con el total de tickets y las cantidades correspondientes a Nuevo, En proceso, Resuelto y Cerrado.
 
-## Archivos importantes
+Para comprobar la persistencia, se puede detener Flask con `Ctrl + C`, volver a ejecutar `python app.py` y abrir nuevamente `http://127.0.0.1:5000`. Los tickets creados anteriormente deberían continuar almacenados.
 
-- `app.py`: aplicación principal.
-- `database/schema.sql`: estructura de la base de datos.
-- `docs/PRUEBAS-H3.md`: pruebas funcionales realizadas.
-- `docs/REPORTE-AVANCE-H3.md`: Reporte de Avance N.º 1.
-- `evidencias/`: capturas de los distintos hitos.
-- `requirements.txt`: dependencias necesarias para ejecutar el proyecto.
+## Base de datos
 
-## Estado actual
+El proyecto utiliza SQLite.
 
-H1: Inicio y planificación del proyecto.  
-H2: Línea base, backlog, modelo de datos, arquitectura y plan de pruebas.  
-H3: MVP funcional v0.1 con RF-01 a RF-04, persistencia, pruebas, bloqueo registrado y actualización del tablero.
+El script de creación se encuentra en:
 
-Las funciones de filtros y resumen de solicitudes corresponden a los siguientes avances del proyecto.
+`database/schema.sql`
+
+No es necesario instalar un servidor de base de datos externo. La aplicación genera localmente la base de datos utilizando el script incluido en el repositorio.
+
+## Documentación y pruebas
+
+La documentación del proyecto se encuentra principalmente en la carpeta:
+
+`docs/`
+
+Dentro de ella se encuentran:
+
+- Documentación H1.
+- Documentación H2.
+- Backlog y planificación.
+- Modelo entidad-relación.
+- Plan de pruebas.
+- Pruebas funcionales H3.
+- Reporte de Avance N.º 1.
+- Pruebas funcionales e integración H4.
+- Reporte de Avance N.º 2.
+
+Las capturas y evidencias se encuentran en:
+
+`evidencias/`
+
+## Estado final
+
+H1: Inicio y planificación.  
+H2: Línea base del proyecto.  
+H3: MVP v0.1 con RF-01 a RF-04 y persistencia.  
+H4: Integración, RF-05, RF-06, pruebas, correcciones y tratamiento de cambio/imprevisto.  
+FINAL: MVP v1.0 con RF-01 a RF-06 integrados.
 
 ## Enlaces
 
-Repositorio: https://github.com/snxxx9/mesa-soporte-ti
+Repositorio:
 
-Tablero GitHub Projects: https://github.com/users/snxxx9/projects/1
+https://github.com/snxxx9/mesa-soporte-ti
+
+Tablero GitHub Projects:
+
+https://github.com/users/snxxx9/projects/1
