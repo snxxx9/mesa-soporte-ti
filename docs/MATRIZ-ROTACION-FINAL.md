@@ -53,8 +53,8 @@ La distribución también permitió que el trabajo no quedara concentrado en una
 
 La siguiente validación debe ser confirmada por cada integrante antes de realizar la entrega final:
 
-- [ ] Sebastian Velasco
-- [ ] Felipe Garces
-- [ ] Jeremmy Vidal
+- [x] Sebastian Velasco
+- [x] Felipe Garces
+- [x] Jeremmy Vidal
 
-Una vez confirmada por los tres integrantes, esta matriz se considerará validada como registro final de la rotación de roles y contribuciones realizadas durante el proyecto.
+La matriz fue revisada y validada por los tres integrantes del equipo como registro final de la rotación de roles y contribuciones realizadas durante el proyecto.
