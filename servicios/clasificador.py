@@ -104,11 +104,7 @@ def palabras_significativas(texto):
 
 
 def contar_coincidencias(texto, palabras):
-    """
-    Cuenta cuántas palabras clave de la lista aparecen en el texto.
-    Se buscan como palabras completas (\\b) para que, por ejemplo,
-    "red" no coincida dentro de "pared".
-    """
+    """Cuenta palabras clave completas en el texto."""
     return sum(
         1 for palabra in palabras
         if re.search(rf"\b{re.escape(palabra)}\b", texto)
@@ -126,18 +122,7 @@ def sugerir_prioridad(texto):
 
 
 def clasificar_ticket(titulo, descripcion, ejemplos_extra=()):
-    """
-    Devuelve un diccionario con la sugerencia:
-        categoria  -> nombre de la categoría sugerida
-        prioridad  -> "Alta", "Media" o "Baja"
-        confianza  -> número entre 0 y 1
-
-    ejemplos_extra es una lista de tuplas (texto, categoria) con tickets
-    reales ya cerrados, para aprender de las correcciones del encargado.
-
-    La confianza es la proporción del puntaje que obtuvo la mejor
-    categoría respecto del puntaje total.
-    """
+    """Devuelve categoria, prioridad y confianza."""
     texto = normalizar(f"{titulo} {descripcion}")
     palabras_ticket = palabras_significativas(texto)
 

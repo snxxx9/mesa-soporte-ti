@@ -14,7 +14,6 @@ ESTADOS_ABIERTOS = ("Nuevo", "En proceso")
 
 
 def ahora_utc():
-
     return datetime.now(timezone.utc).replace(tzinfo=None)
 
 
@@ -23,7 +22,6 @@ def texto_a_fecha(texto):
 
 
 def calcular_sla(ticket):
-
     creacion = texto_a_fecha(ticket["fecha_creacion"])
     plazo = timedelta(hours=HORAS_SLA[ticket["prioridad"]])
     fecha_limite = creacion + plazo

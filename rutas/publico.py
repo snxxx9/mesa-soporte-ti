@@ -1,11 +1,3 @@
-"""
-Páginas públicas: no necesitan iniciar sesión.
-
-El solicitante reporta una falla escaneando el QR del equipo (o el afiche
-de su organización), sigue el estado de su ticket con un código privado y
-responde la encuesta de satisfacción al cierre.
-"""
-
 from flask import Blueprint, Response, abort, flash, g, jsonify, redirect, render_template, request, url_for
 import qrcode
 import qrcode.image.svg
@@ -111,8 +103,7 @@ def reportar(slug):
         ids_categorias = [str(categoria["id"]) for categoria in categorias]
         equipos_por_codigo = {equipo["codigo"]: equipo["id"] for equipo in equipos}
 
-        # Categoría y prioridad son opcionales: si se dejan vacías,
-        # se usa la sugerencia del clasificador.
+        # Si vienen vacías se usa la sugerencia del clasificador
         if not solicitante or not titulo or not descripcion:
             error = "Debes completar tu nombre, el título y la descripción."
         elif prioridad and prioridad not in PRIORIDADES_VALIDAS:
@@ -229,9 +220,6 @@ def ayuda(slug):
 
 @bp.route("/salud")
 def salud():
-    """
-    Punto de control para un monitor externo (por ejemplo UptimeRobot),
-    que permite medir la disponibilidad del servicio (K9).
-    """
+    """Control para monitor externo (K9)."""
     get_db().execute("SELECT 1").fetchone()
     return jsonify({"estado": "ok"})

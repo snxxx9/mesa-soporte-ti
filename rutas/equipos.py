@@ -1,8 +1,3 @@
-"""
-Inventario de equipos: códigos QR, historial, mantenimiento predictivo
-y reporte de equipos dados de baja para reciclaje (Ley REP).
-"""
-
 import csv
 import io
 

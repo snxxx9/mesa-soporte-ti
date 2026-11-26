@@ -6,11 +6,7 @@ DIAS_PLAZO_REVISION = 7
 
 
 def revisar_alerta_equipo(conexion, equipo_id):
-    """
-    Se llama después de registrar un ticket con equipo.
-    Crea una alerta si se cumple la regla y no hay otra pendiente.
-    Devuelve True si se creó una alerta.
-    """
+    """Crea una alerta si se cumple la regla."""
     fallas = conexion.execute(
         """
         SELECT COUNT(*) AS cantidad

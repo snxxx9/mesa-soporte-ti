@@ -61,10 +61,7 @@ def avisar_encargados(conexion, organizacion_id, asunto, mensaje):
 
 
 def enlace_whatsapp(telefono, mensaje):
-    """
-    Crea un enlace https://wa.me/... que abre WhatsApp con el mensaje
-    escrito. No necesita una API: la persona solo presiona "Enviar".
-    """
+    """Enlace wa.me con el mensaje escrito."""
     if not telefono:
         return None
 

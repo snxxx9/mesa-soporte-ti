@@ -44,10 +44,7 @@ def semaforo(valor, meta, mayor_es_mejor=True):
 
 
 def ultimas_semanas(cantidad, hoy=None):
-    """
-    Devuelve una lista de periodos (nombre, desde, hasta) de lunes a lunes,
-    desde la semana más antigua hasta la actual.
-    """
+    """Periodos (nombre, desde, hasta) de lunes a lunes."""
     hoy = hoy or date.today()
     lunes_actual = hoy - timedelta(days=hoy.weekday())
 
@@ -168,10 +165,7 @@ def valores_proyecto(conexion, desde=None, hasta=None):
 
 
 def cuadro_de_mando(conexion, organizacion_id=None, incluir_proyecto=False, semanas=4):
-    """
-    Arma las filas del cuadro de mando con el valor de cada semana y el
-    total. Si organizacion_id es None se consideran todas las organizaciones.
-    """
+    """Filas del cuadro de mando por semana."""
     periodos = ultimas_semanas(semanas)
 
     def valores(desde, hasta):

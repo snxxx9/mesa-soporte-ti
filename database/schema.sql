@@ -1,11 +1,8 @@
 PRAGMA foreign_keys = ON;
 
--- =====================================================================
 -- SoporTI · Esquema de la base de datos
--- =====================================================================
 
--- Organizaciones clientes (pymes, colegios, servicios TI).
--- Cada organización solo ve sus propios datos (plataforma multiorganización).
+-- Organizaciones clientes
 CREATE TABLE IF NOT EXISTS organizaciones (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nombre TEXT NOT NULL UNIQUE,
@@ -15,11 +12,7 @@ CREATE TABLE IF NOT EXISTS organizaciones (
     fecha_creacion TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Usuarios del sistema.
---   solicitante: reporta fallas (no inicia sesión)
---   tecnico:     atiende tickets y alertas
---   encargado:   encargado TI de la organización (todo lo anterior + equipos e indicadores)
---   admin:       equipo SoporTI (organizaciones, cuentas y control del proyecto)
+-- Usuarios: solicitante, tecnico, encargado y admin
 CREATE TABLE IF NOT EXISTS usuarios (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     organizacion_id INTEGER,
@@ -42,7 +35,7 @@ CREATE TABLE IF NOT EXISTS categorias (
     nombre TEXT NOT NULL UNIQUE
 );
 
--- Inventario de equipos. El código se imprime como código QR.
+-- Inventario de equipos
 CREATE TABLE IF NOT EXISTS equipos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     organizacion_id INTEGER NOT NULL,
@@ -70,7 +63,7 @@ CREATE TABLE IF NOT EXISTS tickets (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     organizacion_id INTEGER NOT NULL,
 
-    -- Código aleatorio para que el solicitante siga su ticket sin iniciar sesión
+    -- Código para seguir el ticket sin sesión
     codigo_seguimiento TEXT NOT NULL UNIQUE,
 
     titulo TEXT NOT NULL,
@@ -165,8 +158,7 @@ CREATE TABLE IF NOT EXISTS alertas (
         ON DELETE CASCADE
 );
 
--- Incidencias que llegaron por otros medios (WhatsApp, correo, verbal).
--- Las registra el encargado y sirven para calcular K3 Adopción.
+-- Incidencias por otros medios (K3)
 CREATE TABLE IF NOT EXISTS incidencias_externas (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     organizacion_id INTEGER NOT NULL,
@@ -201,8 +193,7 @@ CREATE TABLE IF NOT EXISTS soluciones (
         ON DELETE RESTRICT
 );
 
--- Control semanal del proyecto (lo registra el Jefe de Proyecto):
--- K1 Avance del plan, K2 Desviación presupuestaria y K9 Disponibilidad.
+-- Control semanal del proyecto (K1, K2, K9)
 CREATE TABLE IF NOT EXISTS mediciones_semanales (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     semana_inicio TEXT NOT NULL UNIQUE,

@@ -1,7 +1,3 @@
-"""
-Cuadro de mando de la organización y reporte mensual para la dirección.
-"""
-
 from datetime import date
 
 from flask import Blueprint, flash, g, redirect, render_template, request, url_for

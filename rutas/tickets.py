@@ -1,7 +1,3 @@
-"""
-Gestión de tickets para técnicos y encargados de la organización.
-"""
-
 from flask import Blueprint, abort, flash, g, redirect, render_template, request, url_for
 
 from db import get_db
@@ -231,9 +227,7 @@ def detalle(ticket_id):
                     ticket["categoria"], nombres_categorias[nueva_categoria_id]
                 )
 
-            # fecha_cierre se guarda la primera vez que el ticket pasa a
-            # Resuelto o Cerrado, y se borra si se vuelve a abrir.
-            # Si cambia la prioridad se reinicia el aviso de plazo.
+            # fecha_cierre solo se guarda al cerrar por primera vez
             conexion.execute("""
                 UPDATE tickets
                 SET responsable_id = ?,
@@ -312,10 +306,7 @@ def detalle(ticket_id):
 @bp.route("/incidencias", methods=["GET", "POST"])
 @rol_requerido(*ROLES_ATENCION)
 def incidencias():
-    """
-    Registro de incidencias que llegaron por otros medios (WhatsApp,
-    correo o verbal). Se usa para medir la adopción de la plataforma (K3).
-    """
+    """Incidencias por otros medios (K3)."""
     conexion = get_db()
     error = None
 

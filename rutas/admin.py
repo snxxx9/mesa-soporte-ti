@@ -1,8 +1,3 @@
-"""
-Administración de la plataforma (equipo SoporTI):
-organizaciones clientes, cuentas de acceso y control del proyecto.
-"""
-
 import re
 import sqlite3
 
@@ -176,10 +171,7 @@ def restablecer_clave(usuario_id):
 @bp.route("/proyecto", methods=["GET", "POST"])
 @rol_requerido("admin")
 def proyecto():
-    """
-    Control del proyecto del Jefe de Proyecto: registro semanal de K1, K2
-    y K9, y cuadro de mando con todas las organizaciones.
-    """
+    """Registro semanal de K1, K2 y K9."""
     conexion = get_db()
     error = None
 

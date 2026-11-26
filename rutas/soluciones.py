@@ -1,7 +1,3 @@
-"""
-Base de soluciones frecuentes de la organización.
-"""
-
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 
 from db import get_db
