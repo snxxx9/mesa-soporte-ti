@@ -1,20 +1,3 @@
-"""
-Clasificador automático de tickets (sugerencia de categoría y urgencia).
-
-Usa dos fuentes de información:
-  1. Palabras clave por categoría.
-  2. Ejemplos de tickets ya clasificados: los 40 ejemplos obtenidos con el
-     método Concierge del piloto + los tickets cerrados del sistema, que
-     incluyen las correcciones hechas por el encargado. Así la sugerencia
-     mejora a medida que se usa el sistema (riesgo R2).
-
-No depende de servicios externos, por lo que no tiene costo de uso
-(riesgo R6) y siempre se puede corregir manualmente.
-
-Si la confianza es menor a UMBRAL_CONFIANZA, el ticket queda en la
-categoría "Por clasificar" para que el encargado la revise.
-"""
-
 import re
 import unicodedata
 
@@ -22,7 +5,6 @@ UMBRAL_CONFIANZA = 0.6
 
 CATEGORIA_POR_CLASIFICAR = "Por clasificar"
 
-# Cantidad mínima de palabras en común para considerar parecido un ejemplo
 PALABRAS_EN_COMUN_MINIMAS = 2
 
 PALABRAS_POR_CATEGORIA = {
@@ -55,7 +37,6 @@ PALABRAS_PRIORIDAD_BAJA = [
     "instalar", "cambiar fondo",
 ]
 
-# 40 ejemplos clasificados manualmente durante el piloto (método Concierge)
 EJEMPLOS_PILOTO = [
     ("El computador de la sala no enciende aunque está enchufado", "Hardware"),
     ("La impresora de secretaría tiene papel atascado", "Hardware"),
@@ -99,7 +80,6 @@ EJEMPLOS_PILOTO = [
     ("No carga la página del ministerio, dice sin conexión", "Conectividad"),
 ]
 
-# Palabras muy comunes que no ayudan a distinguir categorías
 PALABRAS_IGNORADAS = {
     "para", "pero", "cada", "como", "esta", "este", "esto", "tiene", "hace",
     "sala", "desde", "cuando", "todas", "todos", "muy", "solo", "luego",
