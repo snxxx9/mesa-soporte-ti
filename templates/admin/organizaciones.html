@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Organizaciones{% endblock %}
+
+{% block contenido %}
+
+<section>
+    <h2>Organizaciones clientes</h2>
+
+    {% if organizaciones %}
+        <div class="tabla-responsive">
+            <table class="tabla-movil">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Tipo</th>
+                        <th>Equipos</th>
+                        <th>Tickets</th>
+                        <th>Usuarios</th>
+                        <th>Enlace de reporte</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for organizacion in organizaciones %}
+                        <tr>
+                            <td data-label="Nombre">{{ organizacion.nombre }}</td>
+                            <td data-label="Tipo">{{ organizacion.tipo }}</td>
+                            <td data-label="Equipos">{{ organizacion.equipos }}</td>
+                            <td data-label="Tickets">{{ organizacion.tickets }}</td>
+                            <td data-label="Usuarios">{{ organizacion.usuarios }}</td>
+                            <td data-label="Enlace">
+                                <a href="{{ url_for('publico.reportar', slug=organizacion.slug) }}">
+                                    /reportar/{{ organizacion.slug }}
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>Todavía no hay organizaciones.</p>
+    {% endif %}
+</section>
+
+<hr>
+
+<section>
+    <h3>Nueva organización</h3>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <div class="campos-dobles">
+            <div>
+                <label for="nombre">Nombre de la organización</label>
+                <input type="text" id="nombre" name="nombre" required>
+            </div>
+
+            <div>
+                <label for="tipo">Tipo</label>
+                <select id="tipo" name="tipo">
+                    {% for tipo in tipos %}
+                        <option value="{{ tipo }}">{{ tipo }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label for="encargado">Nombre del encargado TI</label>
+                <input type="text" id="encargado" name="encargado" required>
+            </div>
+
+            <div>
+                <label for="email">Correo del encargado (para alertas)</label>
+                <input type="email" id="email" name="email">
+            </div>
+
+            <div>
+                <label for="usuario">Usuario de acceso</label>
+                <input type="text" id="usuario" name="usuario" required>
+            </div>
+
+            <div>
+                <label for="clave">Clave inicial (mínimo 8 caracteres)</label>
+                <input type="password" id="clave" name="clave" required minlength="8">
+            </div>
+        </div>
+
+        <br>
+
+        <button type="submit">Crear organización</button>
+    </form>
+</section>
+
+{% endblock %}

@@ -1,0 +1,233 @@
+# README PROFESOR
+
+> **Actualización SoporTI (Entregable Parte II) creada por Milton Zambrano Tobar y Sebastián Velasco.**
+
+## Mesa de Soporte TI – MVP v1.0
+
+Proyecto desarrollado por Sebastian Velasco, Felipe Garces y Jeremmy Vidal para la Evaluación 3 de Gestión de Proyectos Informáticos.
+
+El sistema corresponde a una Mesa de Soporte TI desarrollada con Python, Flask, SQLite, HTML y CSS. La versión final permite registrar solicitudes de soporte, generar automáticamente un ID y fecha de creación, visualizar los tickets, asignar responsables, cambiar estados, filtrar solicitudes y consultar un resumen general por estado.
+
+La información queda almacenada mediante SQLite, por lo que los tickets permanecen guardados aunque la aplicación se cierre y posteriormente se vuelva a ejecutar.
+
+## Funciones implementadas
+
+- RF-01: Registro de solicitudes con solicitante, título, descripción, categoría y prioridad.
+- RF-02: Generación automática de ID único y fecha de creación.
+- RF-03: Listado de solicitudes mostrando estado, prioridad y responsable.
+- RF-04: Asignación de responsable y cambio de estado entre Nuevo, En proceso, Resuelto y Cerrado.
+- RF-05: Filtros por estado, prioridad y categoría.
+- RF-06: Resumen con cantidad total de solicitudes y cantidad por estado.
+- Persistencia de información mediante SQLite.
+- Validaciones de campos obligatorios.
+- Registro de cambios relevantes realizados sobre los tickets.
+
+## SoporTI – versión del Entregable Parte II
+
+> **Autores de esta actualización (SoporTI):** Milton Zambrano Tobar y Sebastián Velasco.
+> Desarrollada para el Entregable Parte II (PEP801) de Ingeniería de Ejecución en Informática mención Desarrollo de Sistemas, Escuela de Construcción e Ingeniería, sección 4721.
+>
+> | Integrante | Cargos en el proyecto |
+> |---|---|
+> | Milton Zambrano Tobar (MZ) | Jefe de Proyecto · Desarrollador Backend, BD e IA |
+> | Sebastián Velasco (SV) | Desarrollador Frontend y UX · Encargado de Calidad (QA) · Encargado de Implementación, Soporte y Comercial |
+>
+> La versión MVP v1.0 anterior (Mesa de Soporte TI) fue desarrollada por Sebastian Velasco, Felipe Garces y Jeremmy Vidal.
+
+A partir del informe (plan de ejecución, piloto, validación y estrategia de evolución) el sistema pasó a llamarse **SoporTI · Tu soporte TI, ordenado y preventivo** e incluye todo lo descrito en el informe.
+
+### Funciones del MVP validado y ajustes del piloto
+
+| Función | Dónde está | Relación con el informe |
+|---|---|---|
+| Reporte de fallas con código QR por equipo y afiche con QR de la organización | `rutas/publico.py`, `/equipos/etiquetas`, `/equipos/afiche` | Registro en ≤ 1 minuto, ajuste de capacitación (K3) |
+| Seguimiento del ticket por el solicitante sin crear cuenta | `/seguimiento/<codigo>` | Impacto social |
+| Clasificación automática de categoría y urgencia, umbral de confianza 60 % («Por clasificar»), 40 ejemplos del piloto y aprendizaje con las correcciones | `servicios/clasificador.py` | K6, riesgo R2, ajuste del piloto |
+| Corrección manual de categoría y prioridad con trazabilidad | `rutas/tickets.py` | Riesgo R2 |
+| Plazos (SLA) por prioridad: Alta 4 h, Media 24 h, Baja 48 h, aviso al 80 % | `servicios/sla.py`, `servicios/tareas.py` | K5, ajuste del piloto |
+| Alertas preventivas (3 fallas en 60 días), revisión en 7 días, aviso por correo | `servicios/alertas.py` | K7, riesgo R8 |
+| Encuesta de satisfacción al cierre | `/seguimiento/<codigo>` | K8 |
+| Registro de incidencias llegadas por WhatsApp, correo o verbal | `/incidencias` | K3 |
+| Cuadro de mando K1 a K9 por semana con semáforo verde, amarillo y rojo | `servicios/indicadores.py` | Punto 3 y reporte de validación |
+| Inicio de sesión, roles (solicitante, técnico, encargado, admin), claves cifradas y protección CSRF | `seguridad.py`, `rutas/auth.py` | Riesgo R5 (Ley 21.719) |
+| Respaldos automáticos de la base de datos | `tareas.py respaldo` | Riesgo R4 |
+| Punto de control `/salud` para un monitor externo | `rutas/publico.py` | K9 |
+| Clasificación local, sin costo por uso de una API externa | `servicios/clasificador.py` | Riesgo R6 |
+
+### Versión 2 y versión 3 (estrategia de evolución)
+
+| Función | Dónde está |
+|---|---|
+| Vista móvil (las tablas se muestran como tarjetas en el celular) | `static/styles.css` |
+| Notificaciones por correo al encargado y al solicitante, y enlace directo a WhatsApp | `servicios/notificaciones.py` |
+| Inventario completo de equipos (marca, modelo, serie, fecha de compra, estado) | `rutas/equipos.py` |
+| Base de soluciones frecuentes (página de ayuda pública) | `rutas/soluciones.py`, `/ayuda/<organizacion>` |
+| Plataforma multiorganización (SaaS): cada organización ve solo sus datos | `organizacion_id` en las tablas, `rutas/admin.py` |
+| Mantenimiento predictivo con el historial de cada equipo | `servicios/prediccion.py` |
+| Reporte de equipos dados de baja para reciclaje (Ley REP) con descarga CSV | `/equipos/reciclaje` |
+| Reporte mensual para la dirección con reconocimiento al área destacada (ADKAR: Refuerzo) | `/reporte-mensual` |
+
+### Estructura del código
+
+```
+app.py              crea la aplicación y registra las rutas
+db.py               conexión a SQLite y creación de tablas
+seguridad.py        sesión, permisos por rol y protección CSRF
+datos_demo.py       carga los datos de ejemplo del piloto
+tareas.py           avisos por correo y respaldos (tarea programada)
+rutas/              una página o grupo de páginas por archivo (Blueprints)
+servicios/          lógica del negocio: clasificador, SLA, alertas, KPI, etc.
+templates/          plantillas HTML separadas por área
+database/schema.sql estructura de la base de datos
+```
+
+### Datos de ejemplo (simulación del piloto)
+
+```powershell
+python datos_demo.py
+```
+
+Este comando **borra la base de datos** y carga un colegio ficticio con 25 equipos, 30 usuarios y tickets durante las tres semanas anteriores (S7, S8 y S9). Con esos datos el cuadro de mando muestra resultados como los del informe: K3 77/87/94 %, K5 31/26/19 h, K6 62,5/70/81 %, K7 1 de 2 y 3 de 4 alertas, K8 86,8 %, K1 93 %, K2 +9,5 % y K9 99,6 %. También agrega tickets de la semana actual (para ver los avisos de plazo y «Por clasificar») y una segunda organización (pyme).
+
+Cuentas de prueba (solo para la demo local):
+
+| Usuario | Clave | Rol |
+|---|---|---|
+| `admin` | `admin123` | Administrador SoporTI (organizaciones, cuentas y control del proyecto) |
+| `encargado` | `encargado123` | Encargado TI del colegio |
+| `tecnico` | `tecnico123` | Técnico del colegio |
+| `pyme` | `pyme12345` | Encargado TI de la pyme |
+
+Formulario público de reporte del colegio: `http://127.0.0.1:5000/reportar/colegio-los-aromos`
+
+Si no se cargan los datos de ejemplo, al iniciar se crea solo la cuenta `admin` / `admin123` (se puede cambiar con las variables de entorno `ADMIN_USUARIO` y `ADMIN_CLAVE`).
+
+### Avisos por correo y respaldos (opcional)
+
+Para enviar correos se definen estas variables de entorno antes de ejecutar la aplicación. Si no se definen, los avisos solo se muestran en la terminal:
+
+```powershell
+$env:SMTP_SERVIDOR = "smtp.gmail.com"
+$env:SMTP_PUERTO = "587"
+$env:SMTP_USUARIO = "cuenta@ejemplo.com"
+$env:SMTP_CLAVE = "clave-de-aplicacion"
+$env:SECRET_KEY = "una-clave-larga-y-secreta"
+```
+
+Los avisos de plazo, las alertas vencidas y los respaldos se ejecutan con `python tareas.py todo`. Se recomienda programarlo cada hora con el Programador de tareas de Windows. Los respaldos quedan en la carpeta `respaldos/`.
+
+### Base de datos de una versión anterior
+
+La estructura de la base de datos cambió. Si ya existe `database/soporte.db` de la versión 1.0, hay que eliminarlo (o ejecutar `python datos_demo.py`) para que se cree con las tablas nuevas.
+
+### Probar el QR desde un celular
+
+El QR apunta a la dirección con la que se abrió la página. Para escanearlo desde un celular conectado a la misma red, ejecuta Flask con `app.run(debug=True, host="0.0.0.0")` y abre la aplicación usando la IP del computador (por ejemplo `http://192.168.1.10:5000`).
+
+## Cómo ejecutar el proyecto
+
+1. Descargar o clonar el repositorio:
+
+`git clone https://github.com/snxxx9/mesa-soporte-ti.git`
+
+2. Entrar a la carpeta del proyecto:
+
+`cd mesa-soporte-ti`
+
+3. Crear el entorno virtual:
+
+`python -m venv .venv`
+
+4. Activar el entorno virtual en PowerShell:
+
+`.\.venv\Scripts\Activate.ps1`
+
+Si PowerShell bloquea la activación, ejecutar primero:
+
+`Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`
+
+Luego volver a ejecutar:
+
+`.\.venv\Scripts\Activate.ps1`
+
+5. Instalar las dependencias:
+
+`pip install -r requirements.txt`
+
+6. (Opcional, recomendado) Cargar los datos de ejemplo del piloto:
+
+`python datos_demo.py`
+
+7. Iniciar la aplicación:
+
+`python app.py`
+
+8. Abrir en el navegador:
+
+`http://127.0.0.1:5000`
+
+La terminal debe mantenerse abierta mientras se utiliza la aplicación. Para detenerla se debe presionar `Ctrl + C`.
+
+## Prueba rápida del sistema
+
+Con los datos de ejemplo cargados, ingresar con `encargado` / `encargado123` para ver el panel con avisos, las alertas preventivas, el inventario con QR y el cuadro de mando. Con `admin` / `admin123` se ve el control del proyecto (K1 a K9). Las instrucciones originales de la versión 1.0 siguen siendo válidas desde el panel de solicitudes:
+
+Para comprobar el funcionamiento se puede registrar una nueva solicitud completando los campos solicitante, título, descripción, categoría y prioridad.
+
+Al guardar el ticket, el sistema genera automáticamente su ID, fecha de creación y estado inicial “Nuevo”.
+
+Desde el listado principal se puede abrir el detalle del ticket, asignar un responsable y modificar su estado.
+
+En la pantalla principal también se pueden utilizar los filtros por estado, prioridad y categoría. Además, se muestra un resumen con el total de tickets y las cantidades correspondientes a Nuevo, En proceso, Resuelto y Cerrado.
+
+Para comprobar la persistencia, se puede detener Flask con `Ctrl + C`, volver a ejecutar `python app.py` y abrir nuevamente `http://127.0.0.1:5000`. Los tickets creados anteriormente deberían continuar almacenados.
+
+## Base de datos
+
+El proyecto utiliza SQLite.
+
+El script de creación se encuentra en:
+
+`database/schema.sql`
+
+No es necesario instalar un servidor de base de datos externo. La aplicación genera localmente la base de datos utilizando el script incluido en el repositorio.
+
+## Documentación y pruebas
+
+La documentación del proyecto se encuentra principalmente en la carpeta:
+
+`docs/`
+
+Dentro de ella se encuentran:
+
+- Documentación H1.
+- Documentación H2.
+- Backlog y planificación.
+- Modelo entidad-relación.
+- Plan de pruebas.
+- Pruebas funcionales H3.
+- Reporte de Avance N.º 1.
+- Pruebas funcionales e integración H4.
+- Reporte de Avance N.º 2.
+
+Las capturas y evidencias se encuentran en:
+
+`evidencias/`
+
+## Estado final
+
+H1: Inicio y planificación.  
+H2: Línea base del proyecto.  
+H3: MVP v0.1 con RF-01 a RF-04 y persistencia.  
+H4: Integración, RF-05, RF-06, pruebas, correcciones y tratamiento de cambio/imprevisto.  
+FINAL: MVP v1.0 con RF-01 a RF-06 integrados.
+
+## Enlaces
+
+Repositorio:
+
+https://github.com/snxxx9/mesa-soporte-ti
+
+Tablero GitHub Projects:
+
+https://github.com/users/snxxx9/projects/1

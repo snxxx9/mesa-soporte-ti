@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}{{ equipo.codigo }}{% endblock %}
+
+{% block contenido %}
+
+<section class="ficha-equipo">
+    <img class="qr-grande"
+         src="{{ url_for('publico.qr_equipo', codigo=equipo.codigo) }}"
+         alt="Código QR del equipo {{ equipo.codigo }}">
+
+    <div>
+        <h2>Historial del equipo {{ equipo.codigo }}</h2>
+
+        <p><strong>Nombre:</strong> {{ equipo.nombre }}</p>
+        <p><strong>Tipo:</strong> {{ equipo.tipo }} · {{ equipo.marca or "" }} {{ equipo.modelo or "" }}</p>
+        <p><strong>N° de serie:</strong> {{ equipo.numero_serie or "-" }}</p>
+        <p><strong>Ubicación:</strong> {{ equipo.ubicacion or "Sin ubicación" }}</p>
+        <p><strong>Fecha de compra:</strong> {{ equipo.fecha_compra or "-" }}</p>
+        <p><strong>Estado:</strong> {{ equipo.estado }}
+            {% if equipo.estado == "Dado de baja" %}({{ equipo.fecha_baja }}: {{ equipo.motivo_baja }}){% endif %}
+        </p>
+
+        {% if riesgo %}
+            <p>
+                <strong>Riesgo de falla:</strong>
+                <span class="riesgo riesgo-{{ riesgo.nivel|lower }}">{{ riesgo.nivel }}</span>
+                ({{ riesgo.puntos }} puntos) · {{ riesgo.recomendacion }}
+            </p>
+        {% endif %}
+
+        <p class="acciones">
+            <a href="{{ url_for('publico.escanear_equipo', codigo=equipo.codigo) }}">Reportar una falla</a>
+            {% if g.usuario.rol == "encargado" %}
+                <a href="{{ url_for('equipos.editar', codigo=equipo.codigo) }}">Editar equipo</a>
+            {% endif %}
+        </p>
+    </div>
+</section>
+
+<hr>
+
+<section>
+    <h3>Alertas preventivas</h3>
+
+    {% if alertas %}
+        <ul>
+            {% for alerta in alertas %}
+                <li>
+                    {{ alerta.fecha_creacion }} · {{ alerta.motivo }}
+                    <strong>({{ alerta.estado }})</strong>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Este equipo no tiene alertas.</p>
+    {% endif %}
+</section>
+
+<hr>
+
+<section>
+    <h3>Tickets del equipo</h3>
+
+    {% if tickets %}
+        <div class="tabla-responsive">
+            <table class="tabla-movil">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Título</th>
+                        <th>Categoría</th>
+                        <th>Prioridad</th>
+                        <th>Estado</th>
+                        <th>Solución</th>
+                        <th>Fecha</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ticket in tickets %}
+                        <tr>
+                            <td data-label="ID">{{ ticket.id }}</td>
+                            <td data-label="Título">{{ ticket.titulo }}</td>
+                            <td data-label="Categoría">{{ ticket.categoria }}</td>
+                            <td data-label="Prioridad">{{ ticket.prioridad }}</td>
+                            <td data-label="Estado">{{ ticket.estado }}</td>
+                            <td data-label="Solución">{{ ticket.solucion or "-" }}</td>
+                            <td data-label="Fecha">{{ ticket.fecha_creacion }}</td>
+                            <td data-label="Acción">
+                                <a href="{{ url_for('tickets.detalle', ticket_id=ticket.id) }}">Ver ticket</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>Este equipo todavía no tiene tickets registrados.</p>
+    {% endif %}
+</section>
+
+{% endblock %}

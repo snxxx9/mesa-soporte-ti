@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}{% if editando %}Editar equipo{% else %}Nuevo equipo{% endif %}{% endblock %}
+
+{% block contenido %}
+
+<section>
+    <h2>{% if editando %}Editar equipo {{ datos.codigo }}{% else %}Agregar equipo{% endif %}</h2>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <div class="campos-dobles">
+            <div>
+                <label for="codigo">Código (ej. COL-026)</label>
+                <input type="text" id="codigo" name="codigo" value="{{ datos.codigo or '' }}" required>
+            </div>
+
+            <div>
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" value="{{ datos.nombre or '' }}" required>
+            </div>
+
+            <div>
+                <label for="tipo">Tipo</label>
+                <select id="tipo" name="tipo">
+                    {% for tipo in tipos %}
+                        <option value="{{ tipo }}" {% if datos.tipo == tipo %}selected{% endif %}>{{ tipo }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label for="ubicacion">Ubicación</label>
+                <input type="text" id="ubicacion" name="ubicacion" value="{{ datos.ubicacion or '' }}">
+            </div>
+
+            <div>
+                <label for="marca">Marca</label>
+                <input type="text" id="marca" name="marca" value="{{ datos.marca or '' }}">
+            </div>
+
+            <div>
+                <label for="modelo">Modelo</label>
+                <input type="text" id="modelo" name="modelo" value="{{ datos.modelo or '' }}">
+            </div>
+
+            <div>
+                <label for="numero_serie">N° de serie</label>
+                <input type="text" id="numero_serie" name="numero_serie" value="{{ datos.numero_serie or '' }}">
+            </div>
+
+            <div>
+                <label for="fecha_compra">Fecha de compra</label>
+                <input type="date" id="fecha_compra" name="fecha_compra" value="{{ datos.fecha_compra or '' }}">
+            </div>
+
+            <div>
+                <label for="estado">Estado</label>
+                <select id="estado" name="estado">
+                    {% for estado in estados %}
+                        <option value="{{ estado }}" {% if datos.estado == estado %}selected{% endif %}>{{ estado }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label for="motivo_baja">Motivo de baja (si corresponde)</label>
+                <input type="text" id="motivo_baja" name="motivo_baja" value="{{ datos.motivo_baja or '' }}">
+            </div>
+        </div>
+
+        <br>
+
+        <button type="submit">Guardar</button>
+        <a href="{{ url_for('equipos.lista') }}">Cancelar</a>
+    </form>
+</section>
+
+{% endblock %}

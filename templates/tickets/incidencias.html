@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Incidencias por otros canales{% endblock %}
+
+{% block contenido %}
+
+<section>
+    <h2>Incidencias recibidas por otros canales</h2>
+
+    <p>
+        Registra aquí los problemas que te informaron por WhatsApp, correo o de forma verbal.
+        Así se puede medir cuánto se usa la plataforma (K3 Adopción).
+    </p>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <div>
+            <label for="canal">Canal</label><br>
+            <select id="canal" name="canal" required>
+                {% for canal in canales %}
+                    <option value="{{ canal }}">{{ canal }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="descripcion">Descripción breve</label><br>
+            <input type="text" id="descripcion" name="descripcion" required>
+        </div>
+
+        <br>
+
+        <button type="submit">Registrar</button>
+    </form>
+</section>
+
+<hr>
+
+<section>
+    <h3>Últimos registros</h3>
+
+    {% if registros %}
+        <div class="tabla-responsive">
+            <table class="tabla-movil">
+                <thead>
+                    <tr><th>Fecha</th><th>Canal</th><th>Descripción</th></tr>
+                </thead>
+                <tbody>
+                    {% for registro in registros %}
+                        <tr>
+                            <td data-label="Fecha">{{ registro.fecha }}</td>
+                            <td data-label="Canal">{{ registro.canal }}</td>
+                            <td data-label="Descripción">{{ registro.descripcion }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No hay incidencias registradas por otros canales.</p>
+    {% endif %}
+</section>
+
+{% endblock %}

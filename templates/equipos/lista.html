@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Inventario de equipos{% endblock %}
+
+{% block contenido %}
+
+<section>
+    <h2>Inventario de equipos</h2>
+
+    <p>
+        Cada equipo tiene su código QR. Al escanearlo se abre el formulario de reporte
+        con el equipo ya seleccionado. El riesgo se calcula con el historial de fallas,
+        la antigüedad y las alertas pendientes (mantenimiento predictivo).
+    </p>
+
+    <p class="acciones">
+        {% if g.usuario.rol == "encargado" %}
+            <a class="boton" href="{{ url_for('equipos.nuevo') }}">Agregar equipo</a>
+        {% endif %}
+        <a href="{{ url_for('equipos.etiquetas') }}">Imprimir etiquetas QR</a>
+        <a href="{{ url_for('equipos.afiche') }}">Imprimir afiche</a>
+        {% if g.usuario.rol == "encargado" %}
+            <a href="{{ url_for('equipos.reciclaje') }}">Equipos dados de baja (Ley REP)</a>
+        {% endif %}
+    </p>
+</section>
+
+<section>
+    {% if equipos %}
+        <div class="tabla-responsive">
+            <table class="tabla-movil">
+                <thead>
+                    <tr>
+                        <th>QR</th>
+                        <th>Código</th>
+                        <th>Nombre</th>
+                        <th>Tipo</th>
+                        <th>Ubicación</th>
+                        <th>Estado</th>
+                        <th>Tickets</th>
+                        <th>Riesgo</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for equipo in equipos %}
+                        {% set riesgo = riesgos.get(equipo.id) %}
+                        <tr>
+                            <td data-label="QR">
+                                <img class="qr-mini"
+                                     src="{{ url_for('publico.qr_equipo', codigo=equipo.codigo) }}"
+                                     alt="QR {{ equipo.codigo }}">
+                            </td>
+                            <td data-label="Código">{{ equipo.codigo }}</td>
+                            <td data-label="Nombre">{{ equipo.nombre }}</td>
+                            <td data-label="Tipo">{{ equipo.tipo }}</td>
+                            <td data-label="Ubicación">{{ equipo.ubicacion or "-" }}</td>
+                            <td data-label="Estado">{{ equipo.estado }}</td>
+                            <td data-label="Tickets">{{ equipo.total_tickets }}</td>
+                            <td data-label="Riesgo">
+                                {% if riesgo %}
+                                    <span class="riesgo riesgo-{{ riesgo.nivel|lower }}">{{ riesgo.nivel }}</span>
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td data-label="Acción">
+                                <a href="{{ url_for('equipos.historial', codigo=equipo.codigo) }}">Historial</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No hay equipos registrados.</p>
+    {% endif %}
+</section>
+
+{% endblock %}

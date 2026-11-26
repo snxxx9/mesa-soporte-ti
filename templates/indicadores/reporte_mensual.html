@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Reporte mensual{% endblock %}
+
+{% block contenido %}
+
+<section class="no-imprimir">
+    <form method="GET" class="filtros">
+        <div>
+            <label for="mes">Mes</label>
+            <input type="month" id="mes" name="mes" value="{{ reporte.mes }}">
+        </div>
+        <div class="filtros-botones">
+            <button type="submit">Ver mes</button>
+        </div>
+    </form>
+</section>
+
+<section>
+    <h2>Reporte mensual · {{ g.usuario.organizacion }} · {{ reporte.mes }}</h2>
+
+    <div class="resumen-grid">
+        <div class="resumen-card"><strong>Tickets registrados</strong><span>{{ reporte.totales.registrados }}</span></div>
+        <div class="resumen-card"><strong>Tickets resueltos</strong><span>{{ reporte.totales.resueltos or 0 }}</span></div>
+    </div>
+
+    <h3>Indicadores del mes</h3>
+
+    <ul class="lista-kpi">
+        {% for kpi in reporte.kpis %}
+            <li>
+                <span class="semaforo semaforo-{{ kpi.estado }}">
+                    {% if kpi.valor is none %}-{% else %}{{ kpi.valor }} {{ kpi.unidad }}{% endif %}
+                </span>
+                {{ kpi.codigo }} {{ kpi.nombre }}
+            </li>
+        {% endfor %}
+    </ul>
+
+    {% if reporte.area_destacada %}
+        <h3>Reconocimiento</h3>
+        <p>
+            🏆 El área <strong>{{ reporte.area_destacada.ubicacion }}</strong> fue la que más reportes
+            resolvió este mes ({{ reporte.area_destacada.resueltos }}). ¡Gracias por usar SoporTI!
+        </p>
+    {% endif %}
+
+    {% if reporte.equipos_con_mas_fallas %}
+        <h3>Equipos con más fallas</h3>
+        <ol>
+            {% for equipo in reporte.equipos_con_mas_fallas %}
+                <li>{{ equipo.codigo }} - {{ equipo.nombre }}: {{ equipo.fallas }} falla(s)</li>
+            {% endfor %}
+        </ol>
+    {% endif %}
+</section>
+
+<hr class="no-imprimir">
+
+<section class="no-imprimir">
+    <h3>Enviar por correo</h3>
+
+    <form method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="mes" value="{{ reporte.mes }}">
+
+        <label for="destinatarios">Correos de la dirección (separados por coma)</label>
+        <input type="text" id="destinatarios" name="destinatarios" required>
+
+        <br><br>
+
+        <button type="submit">Enviar reporte</button>
+        <button type="button" onclick="window.print()">Imprimir</button>
+    </form>
+</section>
+
+{% endblock %}

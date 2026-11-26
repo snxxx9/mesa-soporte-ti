@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Etiquetas QR{% endblock %}
+
+{% block contenido %}
+
+<section class="no-imprimir">
+    <h2>Etiquetas QR</h2>
+    <p>Imprime esta página (Ctrl + P), recorta cada etiqueta y pégala en su equipo.</p>
+</section>
+
+<section class="etiquetas">
+    {% for equipo in equipos %}
+        <div class="etiqueta">
+            <img src="{{ url_for('publico.qr_equipo', codigo=equipo.codigo) }}" alt="QR {{ equipo.codigo }}">
+            <strong>{{ equipo.codigo }}</strong>
+            <span>{{ equipo.nombre }}</span>
+            <span class="etiqueta-ayuda">¿Falla? Escanéame · SoporTI</span>
+        </div>
+    {% else %}
+        <p>No hay equipos activos.</p>
+    {% endfor %}
+</section>
+
+{% endblock %}

@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+
+{% block title %}Ticket #{{ ticket.id }}{% endblock %}
+
+{% block contenido %}
+
+{% set sla = calcular_sla(ticket) %}
+
+<section>
+    <h2>Ticket #{{ ticket.id }}</h2>
+
+    <p><strong>Título:</strong> {{ ticket.titulo }}</p>
+
+    <p>
+        <strong>Descripción:</strong><br>
+        {{ ticket.descripcion }}
+    </p>
+
+    <p><strong>Solicitante:</strong> {{ ticket.solicitante }}</p>
+
+    {% if ticket.solicitante_email or ticket.solicitante_telefono %}
+        <p>
+            <strong>Contacto:</strong>
+            {{ ticket.solicitante_email or "" }} {{ ticket.solicitante_telefono or "" }}
+        </p>
+    {% endif %}
+
+    <p><strong>Categoría:</strong> {{ ticket.categoria }}</p>
+    <p><strong>Prioridad:</strong> {{ ticket.prioridad }}</p>
+    <p><strong>Fecha de creación:</strong> {{ ticket.fecha_creacion }}</p>
+
+    <p>
+        <strong>Equipo:</strong>
+        {% if ticket.equipo_codigo %}
+            <a href="{{ url_for('equipos.historial', codigo=ticket.equipo_codigo) }}">
+                {{ ticket.equipo_codigo }} - {{ ticket.equipo_nombre }}
+            </a>
+        {% else %}
+            Sin equipo asociado
+        {% endif %}
+    </p>
+
+    <p>
+        <strong>Plazo de atención (SLA):</strong>
+        {{ sla.fecha_limite }}
+        <span class="sla sla-{{ sla.estado|lower|replace(' ', '-') }}">{{ sla.estado }}</span>
+    </p>
+
+    <p><strong>Responsable actual:</strong> {{ ticket.responsable or "Sin asignar" }}</p>
+    <p><strong>Estado actual:</strong> {{ ticket.estado }}</p>
+
+    {% if ticket.fecha_cierre %}
+        <p><strong>Fecha de cierre:</strong> {{ ticket.fecha_cierre }}</p>
+    {% endif %}
+
+    {% if ticket.satisfaccion %}
+        <p><strong>Evaluación del solicitante:</strong> {{ ticket.satisfaccion }} de 5</p>
+    {% endif %}
+
+    <p>
+        <strong>Enlace de seguimiento del solicitante:</strong><br>
+        <a href="{{ enlace_seguimiento }}">{{ enlace_seguimiento }}</a>
+    </p>
+
+    {% if whatsapp %}
+        <p><a class="boton boton-verde" href="{{ whatsapp }}" target="_blank" rel="noopener">Avisar por WhatsApp</a></p>
+    {% endif %}
+</section>
+
+{% if ticket.categoria_sugerida %}
+<section class="sugerencia-ia">
+    <h3>Sugerencia automática</h3>
+
+    <p>
+        Categoría sugerida: <strong>{{ ticket.categoria_sugerida }}</strong> ·
+        Prioridad sugerida: <strong>{{ ticket.prioridad_sugerida }}</strong> ·
+        Confianza: <strong>{{ (ticket.confianza_ia * 100)|round|int }} %</strong>
+    </p>
+
+    <p class="ayuda">
+        Si la sugerencia no es correcta, corrige la categoría y la prioridad en el
+        formulario de abajo. Las correcciones se usan para mejorar las próximas sugerencias.
+    </p>
+</section>
+{% endif %}
+
+<hr>
+
+<section>
+    <h3>Actualizar ticket</h3>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <div>
+            <label for="responsable_id">Responsable</label><br>
+            <select id="responsable_id" name="responsable_id">
+                <option value="">Sin asignar</option>
+                {% for responsable in responsables %}
+                    <option value="{{ responsable.id }}"
+                        {% if ticket.responsable_id == responsable.id %}selected{% endif %}>
+                        {{ responsable.nombre }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="estado">Estado</label><br>
+            <select id="estado" name="estado" required>
+                {% for estado in estados %}
+                    <option value="{{ estado }}" {% if ticket.estado == estado %}selected{% endif %}>
+                        {{ estado }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="categoria_id">Categoría</label><br>
+            <select id="categoria_id" name="categoria_id" required>
+                {% for categoria in categorias %}
+                    <option value="{{ categoria.id }}"
+                        {% if ticket.categoria_id == categoria.id %}selected{% endif %}>
+                        {{ categoria.nombre }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="prioridad">Prioridad</label><br>
+            <select id="prioridad" name="prioridad" required>
+                {% for prioridad in prioridades %}
+                    <option value="{{ prioridad }}" {% if ticket.prioridad == prioridad %}selected{% endif %}>
+                        {{ prioridad }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="solucion">Solución aplicada</label><br>
+            <textarea id="solucion" name="solucion" rows="3">{{ ticket.solucion or "" }}</textarea>
+        </div>
+
+        {% if g.usuario.rol == "encargado" %}
+            <label class="casilla">
+                <input type="checkbox" name="guardar_solucion" value="si">
+                Guardar esta solución en la base de soluciones frecuentes
+            </label>
+        {% endif %}
+
+        <br>
+
+        <button type="submit">Guardar cambios</button>
+        <a href="{{ url_for('tickets.inicio') }}">Volver al listado</a>
+    </form>
+</section>
+
+{% if cambios %}
+
+<hr>
+
+<section>
+    <h3>Historial de cambios</h3>
+
+    <ul>
+        {% for cambio in cambios %}
+            <li>
+                {{ cambio.fecha_cambio }} · {{ cambio.campo|capitalize }}:
+                {{ cambio.valor_anterior }} → {{ cambio.valor_nuevo }}
+            </li>
+        {% endfor %}
+    </ul>
+</section>
+
+{% endif %}
+
+{% endblock %}

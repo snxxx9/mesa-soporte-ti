@@ -1,0 +1,44 @@
+{# Tabla del cuadro de mando #}
+
+{% macro celda(valor, unidad, estado) %}
+    <span class="semaforo semaforo-{{ estado }}">
+        {% if valor is none %}-{% else %}{{ valor }} {{ unidad }}{% endif %}
+    </span>
+{% endmacro %}
+
+<div class="tabla-responsive">
+    <table class="cuadro-mando">
+        <thead>
+            <tr>
+                <th>KPI</th>
+                <th>Fórmula</th>
+                <th>Meta</th>
+                {% for periodo in cuadro.periodos %}
+                    <th>{{ periodo }}</th>
+                {% endfor %}
+                <th>Total</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for fila in cuadro.filas %}
+                <tr>
+                    <td><strong>{{ fila.codigo }}</strong> {{ fila.nombre }}</td>
+                    <td class="formula">{{ fila.formula }}</td>
+                    <td>{{ fila.meta }}</td>
+                    {% for semana in fila.semanas %}
+                        <td>{{ celda(semana.valor, fila.unidad, semana.estado) }}</td>
+                    {% endfor %}
+                    <td>{{ celda(fila.valor, fila.unidad, fila.estado) }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<p class="ayuda">
+    <span class="semaforo semaforo-verde">Verde</span> cumple la meta ·
+    <span class="semaforo semaforo-amarillo">Amarillo</span> cerca de la meta (10 %) ·
+    <span class="semaforo semaforo-rojo">Rojo</span> no cumple ·
+    <span class="semaforo semaforo-sin-datos">-</span> sin datos en el periodo.
+</p>

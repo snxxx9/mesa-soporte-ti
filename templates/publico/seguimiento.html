@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Solicitud #{{ ticket.id }}{% endblock %}
+
+{% block contenido %}
+
+<section>
+    <h2>Solicitud #{{ ticket.id }}</h2>
+
+    <p class="ayuda">Guarda la dirección de esta página para revisar el estado de tu solicitud.</p>
+
+    <p><strong>Título:</strong> {{ ticket.titulo }}</p>
+    <p><strong>Categoría:</strong> {{ ticket.categoria }}</p>
+    <p><strong>Prioridad:</strong> {{ ticket.prioridad }}</p>
+
+    {% if ticket.equipo_codigo %}
+        <p><strong>Equipo:</strong> {{ ticket.equipo_codigo }} - {{ ticket.equipo_nombre }}</p>
+    {% endif %}
+
+    <p><strong>Fecha de registro:</strong> {{ ticket.fecha_creacion }}</p>
+    <p><strong>Estado:</strong> <span class="estado">{{ ticket.estado }}</span></p>
+
+    {% if ticket.solucion %}
+        <p><strong>Solución aplicada:</strong><br>{{ ticket.solucion }}</p>
+    {% endif %}
+
+    {% if cambios %}
+        <h3>Avance</h3>
+        <ul>
+            {% for cambio in cambios %}
+                <li>{{ cambio.fecha_cambio }}: {{ cambio.valor_anterior }} → {{ cambio.valor_nuevo }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</section>
+
+{% if ticket.estado in ("Resuelto", "Cerrado") %}
+
+<hr>
+
+<section>
+    <h3>Encuesta de satisfacción</h3>
+
+    {% if ticket.satisfaccion %}
+
+        <p>Nota registrada: <strong>{{ ticket.satisfaccion }} de 5</strong>. ¡Gracias por responder!</p>
+
+    {% else %}
+
+        <form method="POST" action="{{ url_for('publico.encuesta', codigo=ticket.codigo_seguimiento) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <p><strong>¿Cómo evalúas la atención recibida?</strong></p>
+
+            <div class="notas">
+                {% for nota in range(1, 6) %}
+                    <label>
+                        <input type="radio" name="satisfaccion" value="{{ nota }}" required>
+                        {{ nota }}
+                    </label>
+                {% endfor %}
+            </div>
+
+            <p class="ayuda">1 = muy mala · 5 = muy buena</p>
+
+            <button type="submit">Enviar respuesta</button>
+        </form>
+
+    {% endif %}
+</section>
+
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Alertas preventivas{% endblock %}
+
+{% block contenido %}
+
+<section>
+    <h2>Alertas preventivas</h2>
+
+    <p>
+        Se genera una alerta cuando un equipo acumula {{ fallas }} fallas en {{ dias_ventana }} días.
+        Cada alerta debe revisarse en un plazo máximo de {{ dias_plazo }} días y se avisa por correo al encargado.
+    </p>
+</section>
+
+<hr>
+
+<section>
+    {% if alertas %}
+        <div class="tabla-responsive">
+            <table class="tabla-movil">
+                <thead>
+                    <tr>
+                        <th>Equipo</th>
+                        <th>Motivo</th>
+                        <th>Creada</th>
+                        <th>Plazo de revisión</th>
+                        <th>Estado</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for alerta in alertas %}
+                        <tr>
+                            <td data-label="Equipo">
+                                <a href="{{ url_for('equipos.historial', codigo=alerta.equipo_codigo) }}">
+                                    {{ alerta.equipo_codigo }} - {{ alerta.equipo_nombre }}
+                                </a>
+                            </td>
+                            <td data-label="Motivo">{{ alerta.motivo }}</td>
+                            <td data-label="Creada">{{ alerta.fecha_creacion }}</td>
+                            <td data-label="Plazo">
+                                {{ alerta.fecha_limite }}
+                                {% if alerta.vencida %}
+                                    <span class="sla sla-vencido">Vencida</span>
+                                {% endif %}
+                            </td>
+                            <td data-label="Estado">{{ alerta.estado }}</td>
+                            <td data-label="Acción">
+                                {% if alerta.estado == "Pendiente" %}
+                                    <form method="POST" action="{{ url_for('alertas.revisar', alerta_id=alerta.id) }}">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                        <button type="submit">Marcar como revisada</button>
+                                    </form>
+                                {% else %}
+                                    Revisada el {{ alerta.fecha_revision }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No hay alertas preventivas registradas.</p>
+    {% endif %}
+</section>
+
+{% endblock %}

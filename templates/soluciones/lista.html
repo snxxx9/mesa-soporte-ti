@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Soluciones frecuentes{% endblock %}
+
+{% block contenido %}
+
+<section>
+    <h2>Base de soluciones frecuentes</h2>
+
+    <p>
+        Estas soluciones se publican para los usuarios en
+        <a href="{{ url_for('publico.ayuda', slug=g.usuario.organizacion_slug) }}">la página de ayuda</a>,
+        así pueden resolver problemas simples sin esperar al encargado.
+    </p>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <div>
+            <label for="titulo">Problema</label><br>
+            <input type="text" id="titulo" name="titulo" required>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="categoria_id">Categoría</label><br>
+            <select id="categoria_id" name="categoria_id" required>
+                {% for categoria in categorias %}
+                    <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="pasos">Pasos para solucionarlo</label><br>
+            <textarea id="pasos" name="pasos" rows="4" required></textarea>
+        </div>
+
+        <br>
+
+        <button type="submit">Agregar solución</button>
+    </form>
+</section>
+
+<hr>
+
+<section>
+    {% for solucion in soluciones %}
+        <details class="solucion">
+            <summary><strong>{{ solucion.titulo }}</strong> · {{ solucion.categoria }}</summary>
+            <p class="pasos">{{ solucion.pasos }}</p>
+
+            <form method="POST" action="{{ url_for('soluciones.eliminar', solucion_id=solucion.id) }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="boton-peligro">Eliminar</button>
+            </form>
+        </details>
+    {% else %}
+        <p>Todavía no hay soluciones registradas.</p>
+    {% endfor %}
+</section>
+
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Equipos dados de baja{% endblock %}
+
+{% block contenido %}
+
+<section>
+    <h2>Equipos dados de baja para reciclaje</h2>
+
+    <p>
+        Listado de equipos dados de baja para entregarlos a un gestor autorizado de
+        residuos electrónicos, según la Ley REP (DS 22/2025).
+    </p>
+
+    <p class="acciones">
+        <a class="boton" href="{{ url_for('equipos.reciclaje', formato='csv') }}">Descargar CSV</a>
+        <a href="{{ url_for('equipos.lista') }}">Volver al inventario</a>
+    </p>
+</section>
+
+<section>
+    {% if equipos %}
+        <div class="tabla-responsive">
+            <table class="tabla-movil">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nombre</th>
+                        <th>Tipo</th>
+                        <th>Marca / modelo</th>
+                        <th>N° de serie</th>
+                        <th>Compra</th>
+                        <th>Baja</th>
+                        <th>Motivo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for equipo in equipos %}
+                        <tr>
+                            <td data-label="Código">{{ equipo.codigo }}</td>
+                            <td data-label="Nombre">{{ equipo.nombre }}</td>
+                            <td data-label="Tipo">{{ equipo.tipo }}</td>
+                            <td data-label="Marca / modelo">{{ equipo.marca or "" }} {{ equipo.modelo or "" }}</td>
+                            <td data-label="N° de serie">{{ equipo.numero_serie or "-" }}</td>
+                            <td data-label="Compra">{{ equipo.fecha_compra or "-" }}</td>
+                            <td data-label="Baja">{{ equipo.fecha_baja or "-" }}</td>
+                            <td data-label="Motivo">{{ equipo.motivo_baja or "-" }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No hay equipos dados de baja.</p>
+    {% endif %}
+</section>
+
+{% endblock %}
