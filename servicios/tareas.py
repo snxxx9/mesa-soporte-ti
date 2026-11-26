@@ -1,10 +1,3 @@
-"""
-Tareas periódicas: avisos por correo y respaldos de la base de datos.
-
-Se ejecutan con el script tareas.py (ver README), idealmente programado
-cada hora con el Programador de tareas de Windows o cron en Linux.
-"""
-
 import os
 import sqlite3
 from datetime import datetime
@@ -17,7 +10,6 @@ RESPALDOS_A_CONSERVAR = 14
 
 
 def enviar_avisos_sla(conexion):
-    """Avisa al encargado cuando un ticket abierto usó el 80 % de su plazo."""
     tickets = conexion.execute("""
         SELECT id, organizacion_id, titulo, prioridad, estado,
                fecha_creacion, fecha_cierre
@@ -51,7 +43,6 @@ def enviar_avisos_sla(conexion):
 
 
 def avisar_alertas_vencidas(conexion):
-    """Recuerda al encargado las alertas preventivas que pasaron los 7 días."""
     alertas = conexion.execute("""
         SELECT a.id, e.organizacion_id, e.codigo, e.nombre
         FROM alertas a
@@ -79,10 +70,6 @@ def avisar_alertas_vencidas(conexion):
 
 
 def respaldar_base_de_datos(ruta_bd, carpeta_respaldos):
-    """
-    Copia la base de datos usando la función de respaldo de SQLite, que es
-    segura aunque la aplicación esté en uso (riesgo R4).
-    """
     os.makedirs(carpeta_respaldos, exist_ok=True)
 
     nombre = f"soporte_{datetime.now().strftime('%Y%m%d_%H%M%S')}.db"
