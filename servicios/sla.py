@@ -1,10 +1,3 @@
-"""
-Plazos de atención (SLA) según la prioridad del ticket.
-
-Ajuste del piloto (K5): alta 4 h, media 24 h, baja 48 h, con aviso
-al encargado cuando se consume el 80 % del plazo.
-"""
-
 from datetime import datetime, timedelta, timezone
 
 HORAS_SLA = {
@@ -21,10 +14,7 @@ ESTADOS_ABIERTOS = ("Nuevo", "En proceso")
 
 
 def ahora_utc():
-    """
-    Fecha y hora actual en UTC, sin zona horaria.
-    SQLite guarda CURRENT_TIMESTAMP en UTC, por eso comparamos en UTC.
-    """
+
     return datetime.now(timezone.utc).replace(tzinfo=None)
 
 
@@ -33,13 +23,7 @@ def texto_a_fecha(texto):
 
 
 def calcular_sla(ticket):
-    """
-    Recibe un ticket (con fecha_creacion, prioridad, estado y fecha_cierre)
-    y devuelve un diccionario con:
-        fecha_limite -> hasta cuándo hay plazo (texto)
-        estado       -> "En plazo", "Por vencer", "Vencido",
-                        "Cumplido" o "Fuera de plazo"
-    """
+
     creacion = texto_a_fecha(ticket["fecha_creacion"])
     plazo = timedelta(hours=HORAS_SLA[ticket["prioridad"]])
     fecha_limite = creacion + plazo
