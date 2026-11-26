@@ -1,12 +1,3 @@
-"""
-Inicio de sesión, permisos por rol y protección CSRF (riesgo R5).
-
-- cargar_usuario(): deja en g.usuario al usuario conectado (o None).
-- rol_requerido(...): decorador que limita una ruta a ciertos roles.
-- validar_csrf(): rechaza formularios POST que no traen el token correcto,
-  así otra página no puede enviar formularios en nombre del usuario.
-"""
-
 import secrets
 from functools import wraps
 
@@ -14,7 +5,6 @@ from flask import abort, flash, g, redirect, request, session, url_for
 
 from db import get_db
 
-# Roles que atienden tickets dentro de una organización
 ROLES_ATENCION = ("tecnico", "encargado")
 
 
