@@ -1,12 +1,3 @@
-"""
-Alertas preventivas por equipo.
-
-Regla: si un equipo acumula FALLAS_PARA_ALERTA tickets en los últimos
-DIAS_VENTANA días, se genera una alerta para revisarlo antes de que la
-falla sea mayor. Ajuste del piloto (K7): la alerta también se avisa por
-correo y tiene un plazo máximo de revisión de DIAS_PLAZO_REVISION días.
-"""
-
 from servicios.notificaciones import avisar_encargados
 
 FALLAS_PARA_ALERTA = 3
