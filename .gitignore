@@ -11,5 +11,4 @@ instance/
 .DS_Store
 Thumbs.db
 
-# Respaldos de la base de datos
 respaldos/
