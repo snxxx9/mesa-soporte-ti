@@ -1,7 +1,3 @@
-"""
-Lógica para registrar tickets, compartida por el formulario público.
-"""
-
 import secrets
 
 from servicios.alertas import revisar_alerta_equipo
@@ -25,11 +21,6 @@ def buscar_categoria_id(conexion, nombre):
 
 
 def ejemplos_aprendidos(conexion, organizacion_id):
-    """
-    Tickets cerrados de la organización con su categoría final.
-    Incluyen las correcciones del encargado, por eso ayudan a que el
-    clasificador mejore con el uso.
-    """
     filas = conexion.execute(
         """
         SELECT t.titulo || ' ' || t.descripcion AS texto, c.nombre AS categoria
@@ -47,7 +38,6 @@ def ejemplos_aprendidos(conexion, organizacion_id):
 
 
 def obtener_solicitante(conexion, organizacion_id, nombre, email, telefono):
-    """Busca al solicitante por nombre dentro de la organización o lo crea."""
     usuario = conexion.execute(
         """
         SELECT id
@@ -86,10 +76,6 @@ def obtener_solicitante(conexion, organizacion_id, nombre, email, telefono):
 
 def registrar_ticket(conexion, organizacion_id, solicitante_id, titulo, descripcion,
                      categoria_id=None, prioridad=None, equipo_id=None):
-    """
-    Guarda un ticket nuevo. Si no se indica categoría o prioridad, se usa
-    la sugerencia del clasificador. Devuelve (id, codigo_seguimiento).
-    """
     sugerencia = clasificar_ticket(
         titulo,
         descripcion,
