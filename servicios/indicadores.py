@@ -1,17 +1,5 @@
-"""
-Cuadro de mando: cálculo de los KPI K1 a K9 del informe.
-
-- K3 a K8 se calculan con los datos del sistema (tickets, alertas,
-  encuestas e incidencias registradas por otros medios).
-- K1, K2 y K9 se calculan con las mediciones semanales que registra el
-  Jefe de Proyecto (tablero GitHub, boletas y monitor del servidor).
-
-Cada KPI se marca en verde (cumple), amarillo (cerca de la meta) o rojo.
-"""
-
 from datetime import date, timedelta
 
-# Margen para marcar un KPI en amarillo (cerca de la meta)
 MARGEN_AMARILLO = 0.10
 
 DEFINICIONES = {
