@@ -35,6 +35,7 @@ def init_db():
         conexion.executescript(archivo.read())
 
     existe_admin = conexion.execute(
+        "SELECT id FROM usuarios WHERE rol = 'admin'"
     ).fetchone()
 
     if existe_admin is None:
