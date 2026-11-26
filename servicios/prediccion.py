@@ -1,14 +1,3 @@
-"""
-Mantenimiento predictivo con el historial de cada equipo.
-
-Se calcula un puntaje de riesgo simple y explicable:
-  - 2 puntos por cada falla en los últimos DIAS_HISTORIAL días
-  - 1 punto si el equipo tiene 3 o más años, 2 puntos si tiene 5 o más
-  - 2 puntos si tiene una alerta preventiva pendiente
-
-Con el puntaje se define el nivel de riesgo y una recomendación.
-"""
-
 from datetime import date
 
 DIAS_HISTORIAL = 90
