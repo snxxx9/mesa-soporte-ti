@@ -1,12 +1,3 @@
-"""
-Script de tareas periódicas de SoporTI.
-
-Uso:
-    python tareas.py avisos     -> avisos de SLA y de alertas vencidas
-    python tareas.py respaldo   -> copia de seguridad de la base de datos
-    python tareas.py todo       -> ambas cosas
-"""
-
 import os
 import sys
 
