@@ -1,10 +1,3 @@
-"""
-Conexión a la base de datos SQLite.
-
-Se abre una conexión por petición (se guarda en flask.g) y se cierra
-automáticamente al terminar la petición con close_db().
-"""
-
 import os
 import sqlite3
 
@@ -24,7 +17,6 @@ def conectar():
 
 
 def get_db():
-    """Devuelve la conexión de la petición actual (la crea si no existe)."""
     if "db" not in g:
         g.db = conectar()
     return g.db
@@ -37,14 +29,12 @@ def close_db(error=None):
 
 
 def init_db():
-    """Crea las tablas y una cuenta de administrador si todavía no existe."""
     conexion = conectar()
 
     with open(SCHEMA_PATH, "r", encoding="utf-8") as archivo:
         conexion.executescript(archivo.read())
 
     existe_admin = conexion.execute(
-        "SELECT id FROM usuarios WHERE rol = 'admin'"
     ).fetchone()
 
     if existe_admin is None:
