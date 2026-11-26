@@ -1,10 +1,3 @@
-"""
-SoporTI · Tu soporte TI, ordenado y preventivo.
-
-Archivo principal: crea la aplicación Flask y registra las rutas,
-que están separadas por área dentro de la carpeta rutas/.
-"""
-
 import os
 import secrets
 
@@ -19,15 +12,11 @@ from servicios.sla import calcular_sla
 def crear_app():
     app = Flask(__name__)
 
-    # La clave secreta firma la sesión. En producción se define con la
-    # variable de entorno SECRET_KEY para que no cambie al reiniciar.
     app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", secrets.token_hex(32))
 
-    # Funciones disponibles en todas las plantillas
     app.jinja_env.globals["calcular_sla"] = calcular_sla
     app.jinja_env.globals["csrf_token"] = obtener_token_csrf
 
-    # Antes de cada petición: usuario conectado y validación del formulario
     app.before_request(cargar_usuario)
     app.before_request(validar_csrf)
     app.teardown_appcontext(close_db)
