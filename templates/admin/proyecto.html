@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}Control del proyecto{% endblock %}
+
+{% block contenido %}
+
+<section>
+    <h2>Cuadro de mando del proyecto</h2>
+
+    <p>
+        Considera todas las organizaciones. K1, K2 y K9 se calculan con las mediciones
+        semanales registradas abajo.
+    </p>
+
+    {% include "indicadores/_cuadro.html" %}
+</section>
+
+<hr>
+
+<section>
+    <h3>Registrar medición semanal</h3>
+
+    <p class="ayuda">
+        Tareas: tablero de GitHub · Costos: boletas y facturas (en pesos) ·
+        Horas: monitor del servidor (la aplicación expone <code>/salud</code> para el monitor).
+    </p>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <div class="campos-dobles">
+            <div>
+                <label for="semana_inicio">Lunes de la semana</label>
+                <input type="date" id="semana_inicio" name="semana_inicio" required>
+            </div>
+            <div></div>
+            <div>
+                <label for="tareas_planificadas">Tareas planificadas</label>
+                <input type="number" min="0" id="tareas_planificadas" name="tareas_planificadas" required>
+            </div>
+            <div>
+                <label for="tareas_terminadas">Tareas terminadas</label>
+                <input type="number" min="0" id="tareas_terminadas" name="tareas_terminadas" required>
+            </div>
+            <div>
+                <label for="costo_presupuestado">Costo presupuestado ($)</label>
+                <input type="number" min="0" id="costo_presupuestado" name="costo_presupuestado" required>
+            </div>
+            <div>
+                <label for="costo_real">Costo real ($)</label>
+                <input type="number" min="0" id="costo_real" name="costo_real" required>
+            </div>
+            <div>
+                <label for="horas_totales">Horas totales</label>
+                <input type="number" min="0" step="0.1" id="horas_totales" name="horas_totales" value="168" required>
+            </div>
+            <div>
+                <label for="horas_en_linea">Horas en línea</label>
+                <input type="number" min="0" step="0.1" id="horas_en_linea" name="horas_en_linea" required>
+            </div>
+        </div>
+
+        <br>
+
+        <button type="submit">Guardar medición</button>
+    </form>
+</section>
+
+{% if mediciones %}
+
+<hr>
+
+<section>
+    <h3>Mediciones registradas</h3>
+
+    <div class="tabla-responsive">
+        <table class="tabla-movil">
+            <thead>
+                <tr>
+                    <th>Semana</th>
+                    <th>Tareas (terminadas / planificadas)</th>
+                    <th>Costo (real / presupuestado)</th>
+                    <th>Horas (en línea / totales)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for medicion in mediciones %}
+                    <tr>
+                        <td data-label="Semana">{{ medicion.semana_inicio }}</td>
+                        <td data-label="Tareas">{{ medicion.tareas_terminadas }} / {{ medicion.tareas_planificadas }}</td>
+                        <td data-label="Costo">${{ medicion.costo_real }} / ${{ medicion.costo_presupuestado }}</td>
+                        <td data-label="Horas">{{ medicion.horas_en_linea }} / {{ medicion.horas_totales }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+{% endif %}
+
+{% endblock %}

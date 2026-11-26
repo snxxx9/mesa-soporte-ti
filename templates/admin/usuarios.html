@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Cuentas{% endblock %}
+
+{% block contenido %}
+
+<section>
+    <h2>Cuentas de acceso</h2>
+
+    <div class="tabla-responsive">
+        <table class="tabla-movil">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Usuario</th>
+                    <th>Rol</th>
+                    <th>Organización</th>
+                    <th>Correo</th>
+                    <th>Restablecer clave</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cuenta in cuentas %}
+                    <tr>
+                        <td data-label="Nombre">{{ cuenta.nombre }}</td>
+                        <td data-label="Usuario">{{ cuenta.usuario }}</td>
+                        <td data-label="Rol">{{ cuenta.rol|capitalize }}</td>
+                        <td data-label="Organización">{{ cuenta.organizacion or "SoporTI" }}</td>
+                        <td data-label="Correo">{{ cuenta.email or "-" }}</td>
+                        <td data-label="Clave">
+                            <form method="POST" class="form-en-linea"
+                                  action="{{ url_for('admin.restablecer_clave', usuario_id=cuenta.id) }}">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <input type="password" name="clave" placeholder="Nueva clave" minlength="8" required>
+                                <button type="submit">Cambiar</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<hr>
+
+<section>
+    <h3>Nueva cuenta</h3>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <div class="campos-dobles">
+            <div>
+                <label for="organizacion_id">Organización</label>
+                <select id="organizacion_id" name="organizacion_id" required>
+                    {% for organizacion in organizaciones %}
+                        <option value="{{ organizacion.id }}">{{ organizacion.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label for="rol">Rol</label>
+                <select id="rol" name="rol">
+                    {% for rol in roles %}
+                        <option value="{{ rol }}">{{ rol|capitalize }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" required>
+            </div>
+
+            <div>
+                <label for="email">Correo</label>
+                <input type="email" id="email" name="email">
+            </div>
+
+            <div>
+                <label for="usuario">Usuario de acceso</label>
+                <input type="text" id="usuario" name="usuario" required>
+            </div>
+
+            <div>
+                <label for="clave">Clave inicial (mínimo 8 caracteres)</label>
+                <input type="password" id="clave" name="clave" required minlength="8">
+            </div>
+        </div>
+
+        <br>
+
+        <button type="submit">Crear cuenta</button>
+    </form>
+</section>
+
+{% endblock %}

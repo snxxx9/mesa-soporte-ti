@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Indicadores{% endblock %}
+
+{% block contenido %}
+
+<section>
+    <h2>Cuadro de mando · {{ g.usuario.organizacion }}</h2>
+
+    <p>
+        Indicadores calculados con los datos del sistema, revisados cada semana.
+        <a href="{{ url_for('indicadores.reporte_mensual') }}">Ver reporte mensual para la dirección</a>
+    </p>
+</section>
+
+<section>
+    {% include "indicadores/_cuadro.html" %}
+
+    <p class="ayuda">
+        K3 Adopción usa las incidencias registradas en "Otros canales".
+        K1 Avance, K2 Presupuesto y K9 Disponibilidad los registra el Jefe de Proyecto de SoporTI.
+    </p>
+</section>
+
+{% endblock %}

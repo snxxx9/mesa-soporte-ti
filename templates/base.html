@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>{% block title %}Mesa de Soporte TI{% endblock %}</title>
+    <title>{% block title %}SoporTI{% endblock %} | SoporTI</title>
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='styles.css') }}">
@@ -14,18 +14,57 @@
 
     <header>
         <div class="contenedor">
-            <h1>Mesa de Soporte TI</h1>
+            <a class="marca" href="{{ url_for('publico.inicio') }}">
+                <span class="marca-nombre">Sopor<span class="marca-ti">TI</span></span>
+                <span class="marca-lema">Tu soporte TI, ordenado y preventivo</span>
+            </a>
 
+            {% if g.usuario %}
             <nav>
-                <a href="{{ url_for('inicio') }}">Solicitudes</a>
+                {% if g.usuario.rol == "admin" %}
+                    <a href="{{ url_for('admin.organizaciones') }}">Organizaciones</a>
+                    <a href="{{ url_for('admin.usuarios') }}">Cuentas</a>
+                    <a href="{{ url_for('admin.proyecto') }}">Control del proyecto</a>
+                {% else %}
+                    <a href="{{ url_for('tickets.inicio') }}">Solicitudes</a>
+                    <a href="{{ url_for('equipos.lista') }}">Equipos</a>
+                    <a href="{{ url_for('alertas.lista') }}">Alertas</a>
+                    <a href="{{ url_for('tickets.incidencias') }}">Otros canales</a>
+                    {% if g.usuario.rol == "encargado" %}
+                        <a href="{{ url_for('soluciones.lista') }}">Soluciones</a>
+                        <a href="{{ url_for('indicadores.panel') }}">Indicadores</a>
+                    {% endif %}
+                {% endif %}
+
+                <span class="nav-usuario">
+                    {{ g.usuario.nombre }}{% if g.usuario.organizacion %} · {{ g.usuario.organizacion }}{% endif %}
+                </span>
+                <a href="{{ url_for('auth.cambiar_clave') }}">Mi clave</a>
+
+                <form class="form-en-linea" method="POST" action="{{ url_for('auth.logout') }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="boton-enlace">Salir</button>
+                </form>
             </nav>
+            {% endif %}
         </div>
     </header>
 
     <main class="contenedor">
+
+        {% with mensajes = get_flashed_messages() %}
+            {% for mensaje in mensajes %}
+                <p class="mensaje">{{ mensaje }}</p>
+            {% endfor %}
+        {% endwith %}
+
         {% block contenido %}
         {% endblock %}
     </main>
+
+    <footer class="contenedor pie">
+        SoporTI · Los datos personales se usan solo para atender las solicitudes (Ley 19.628 y Ley 21.719).
+    </footer>
 
 </body>
 </html>

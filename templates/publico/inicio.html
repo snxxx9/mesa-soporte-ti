@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block contenido %}
+
+<section class="portada">
+    <h2>Tu soporte TI, ordenado y preventivo</h2>
+
+    <p>
+        SoporTI es una mesa de soporte TI pensada para pymes y colegios sin área TI formal.
+        Cada equipo tiene un código QR: lo escaneas, describes la falla y el sistema sugiere
+        la categoría y la urgencia. El encargado ve todo en un panel y el historial de cada
+        equipo permite avisar cuándo conviene una mantención, antes de que la falla sea mayor.
+    </p>
+
+    <div class="portada-pasos">
+        <div class="resumen-card">
+            <strong>1. Escanea</strong>
+            <span class="paso-texto">el QR pegado en el equipo o en el afiche de tu organización.</span>
+        </div>
+        <div class="resumen-card">
+            <strong>2. Describe</strong>
+            <span class="paso-texto">la falla en menos de un minuto.</span>
+        </div>
+        <div class="resumen-card">
+            <strong>3. Sigue</strong>
+            <span class="paso-texto">el estado de tu solicitud y evalúa la atención.</span>
+        </div>
+    </div>
+
+    <p>
+        <a class="boton" href="{{ url_for('auth.login') }}">Ingreso encargados y técnicos</a>
+    </p>
+</section>
+
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Reportar una falla{% endblock %}
+
+{% block contenido %}
+
+<section>
+    <h2>Reportar una falla · {{ organizacion.nombre }}</h2>
+
+    <p>
+        ¿Es un problema común? Revisa primero las
+        <a href="{{ url_for('publico.ayuda', slug=organizacion.slug) }}">soluciones frecuentes</a>.
+    </p>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <div>
+            <label for="solicitante">Tu nombre</label><br>
+            <input type="text" id="solicitante" name="solicitante"
+                   value="{{ datos.solicitante or '' }}" required>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="equipo_codigo">Equipo con falla</label><br>
+
+            <select id="equipo_codigo" name="equipo_codigo">
+                <option value="">Sin equipo asociado</option>
+
+                {% for equipo in equipos %}
+                    <option
+                        value="{{ equipo.codigo }}"
+                        {% if equipo_codigo == equipo.codigo %}selected{% endif %}
+                    >
+                        {{ equipo.codigo }} - {{ equipo.nombre }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="titulo">¿Qué pasa? (título corto)</label><br>
+            <input type="text" id="titulo" name="titulo"
+                   value="{{ datos.titulo or '' }}" required>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="descripcion">Descripción</label><br>
+            <textarea id="descripcion" name="descripcion" rows="4" required>{{ datos.descripcion or '' }}</textarea>
+        </div>
+
+        <details>
+            <summary>Opciones adicionales (categoría, prioridad y contacto)</summary>
+
+            <p class="ayuda">
+                Si no sabes la categoría o la prioridad, déjalas en
+                "Sugerir automáticamente" y el sistema las propondrá según tu descripción.
+            </p>
+
+            <div>
+                <label for="categoria_id">Categoría</label><br>
+                <select id="categoria_id" name="categoria_id">
+                    <option value="">Sugerir automáticamente</option>
+                    {% for categoria in categorias %}
+                        <option value="{{ categoria.id }}"
+                            {% if datos.categoria_id == categoria.id|string %}selected{% endif %}>
+                            {{ categoria.nombre }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <br>
+
+            <div>
+                <label for="prioridad">Prioridad</label><br>
+                <select id="prioridad" name="prioridad">
+                    <option value="">Sugerir automáticamente</option>
+                    {% for prioridad in ("Baja", "Media", "Alta") %}
+                        <option value="{{ prioridad }}"
+                            {% if datos.prioridad == prioridad %}selected{% endif %}>
+                            {{ prioridad }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <br>
+
+            <div>
+                <label for="email">Correo para avisarte cuando se resuelva (opcional)</label><br>
+                <input type="email" id="email" name="email" value="{{ datos.email or '' }}">
+            </div>
+
+            <br>
+
+            <div>
+                <label for="telefono">Teléfono / WhatsApp (opcional)</label><br>
+                <input type="tel" id="telefono" name="telefono" value="{{ datos.telefono or '' }}">
+            </div>
+        </details>
+
+        <p class="ayuda">
+            Solo guardamos tu nombre y, si lo indicas, tu contacto, para atender tu solicitud.
+        </p>
+
+        <button type="submit">Enviar solicitud</button>
+    </form>
+</section>
+
+{% endblock %}

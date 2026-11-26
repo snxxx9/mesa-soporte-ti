@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Ingresar{% endblock %}
+
+{% block contenido %}
+
+<section>
+    <h2>Ingreso para encargados y técnicos</h2>
+
+    <p class="ayuda">
+        Para reportar una falla no necesitas cuenta: escanea el código QR del equipo
+        o del afiche de tu organización.
+    </p>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <div>
+            <label for="usuario">Usuario</label><br>
+            <input type="text" id="usuario" name="usuario" required autofocus>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="clave">Clave</label><br>
+            <input type="password" id="clave" name="clave" required>
+        </div>
+
+        <br>
+
+        <button type="submit">Ingresar</button>
+    </form>
+</section>
+
+{% endblock %}

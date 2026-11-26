@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Soluciones frecuentes{% endblock %}
+
+{% block contenido %}
+
+<section>
+    <h2>Soluciones frecuentes · {{ organizacion.nombre }}</h2>
+
+    <p>
+        Antes de reportar, revisa si tu problema tiene una solución rápida.
+        Si no se soluciona,
+        <a href="{{ url_for('publico.reportar', slug=organizacion.slug) }}">reporta la falla aquí</a>.
+    </p>
+
+    {% for solucion in soluciones %}
+        <details class="solucion">
+            <summary><strong>{{ solucion.titulo }}</strong> · {{ solucion.categoria }}</summary>
+            <p class="pasos">{{ solucion.pasos }}</p>
+        </details>
+    {% else %}
+        <p>Todavía no hay soluciones frecuentes publicadas.</p>
+    {% endfor %}
+</section>
+
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Cambiar clave{% endblock %}
+
+{% block contenido %}
+
+<section>
+    <h2>Cambiar mi clave</h2>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <div>
+            <label for="actual">Clave actual</label><br>
+            <input type="password" id="actual" name="actual" required>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="nueva">Nueva clave (mínimo 8 caracteres)</label><br>
+            <input type="password" id="nueva" name="nueva" required minlength="8">
+        </div>
+
+        <br>
+
+        <div>
+            <label for="repetir">Repetir nueva clave</label><br>
+            <input type="password" id="repetir" name="repetir" required minlength="8">
+        </div>
+
+        <br>
+
+        <button type="submit">Guardar</button>
+    </form>
+</section>
+
+{% endblock %}

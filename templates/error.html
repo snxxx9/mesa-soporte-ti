@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Error{% endblock %}
+
+{% block contenido %}
+
+<section>
+    <h2>Algo no salió bien</h2>
+    <p>{{ mensaje }}</p>
+    <a href="{{ url_for('publico.inicio') }}">Volver al inicio</a>
+</section>
+
+{% endblock %}

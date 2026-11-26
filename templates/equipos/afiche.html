@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Afiche{% endblock %}
+
+{% block contenido %}
+
+<p class="no-imprimir ayuda">
+    Imprime este afiche (Ctrl + P) y pégalo en un lugar visible, por ejemplo en la sala de profesores.
+</p>
+
+<section class="afiche">
+    <h2>¿Falla tu computador, impresora o internet?</h2>
+
+    <p class="afiche-subtitulo">No lo dejes en un WhatsApp: repórtalo en menos de un minuto.</p>
+
+    <img src="{{ url_for('publico.qr_organizacion', slug=g.usuario.organizacion_slug) }}"
+         alt="Código QR para reportar fallas">
+
+    <ol>
+        <li>Escanea el código con la cámara de tu celular.</li>
+        <li>Escribe tu nombre y qué está pasando.</li>
+        <li>Guarda el enlace para ver el avance de tu solicitud.</li>
+    </ol>
+
+    <p class="afiche-marca">
+        Sopor<span class="marca-ti">TI</span> · {{ g.usuario.organizacion }}<br>
+        <small>Tu soporte TI, ordenado y preventivo</small>
+    </p>
+</section>
+
+{% endblock %}
