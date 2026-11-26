@@ -1,22 +1,3 @@
-"""
-Carga datos de ejemplo que simulan el piloto descrito en el informe.
-
-Organización ficticia: un colegio pequeño con 25 equipos (cada uno con su
-QR) y 30 usuarios, con tickets durante las tres semanas anteriores a la
-actual (S7, S8 y S9 de la Carta Gantt). Los datos están armados para que
-el cuadro de mando muestre resultados parecidos a los del informe:
-K3 84,5 %, K4 91,7 %, K5 ≈ 26 h, K6 70 %, K7 66,7 %, K8 86,8 %,
-K1 93 %, K2 +9,5 % y K9 99,6 %.
-
-También se crea una segunda organización (una pyme) para mostrar que
-cada organización ve solo sus propios datos.
-
-ATENCIÓN: este script BORRA la base de datos actual.
-
-Uso:
-    python datos_demo.py
-"""
-
 import os
 import random
 import secrets
@@ -29,14 +10,10 @@ from servicios.clasificador import EJEMPLOS_PILOTO
 from servicios.indicadores import ultimas_semanas
 from servicios.sla import FORMATO_FECHA, ahora_utc, texto_a_fecha
 
-# Semilla fija: siempre se generan los mismos datos
 random.seed(2026)
 
 AHORA = ahora_utc()
 
-# ---------------------------------------------------------------------
-# Plan del piloto (valores tomados del reporte de validación del informe)
-# ---------------------------------------------------------------------
 
 PLAN_SEMANAS = {
     "S7": {"tickets": 24, "resueltos": 21, "horas_promedio": 31, "ia_aceptadas": 15,
@@ -47,8 +24,6 @@ PLAN_SEMANAS = {
            "encuestas": 11, "encuestas_positivas": 10, "externas": 1},
 }
 
-# Equipos que acumulan 3 fallas y generan una alerta preventiva:
-# (índice del equipo, semanas de sus 3 tickets, ¿la alerta fue revisada?)
 EQUIPOS_CON_ALERTA = [
     (0, ("S7", "S7", "S8"), True),
     (1, ("S7", "S8", "S8"), False),
@@ -58,7 +33,6 @@ EQUIPOS_CON_ALERTA = [
     (5, ("S8", "S8", "S9"), False),
 ]
 
-# Mediciones semanales del proyecto: K1 (tareas), K2 (costos), K9 (horas)
 MEDICIONES = {
     "S7": (10, 9, 40000, 43000, 168, 168),
     "S8": (10, 10, 40000, 45400, 168, 166),
@@ -66,7 +40,6 @@ MEDICIONES = {
 }
 
 EQUIPOS_COLEGIO = [
-    # (nombre, tipo, ubicación, marca, año de compra)
     ("Notebook Dirección", "Notebook", "Dirección", "Lenovo", 2018),
     ("Impresora Secretaría", "Impresora", "Secretaría", "HP", 2016),
     ("Computador Sala de Profesores 1", "Computador", "Sala de profesores", "Dell", 2017),
@@ -133,9 +106,6 @@ for texto, categoria in EJEMPLOS_PILOTO:
     EJEMPLOS_POR_CATEGORIA.setdefault(categoria, []).append(texto)
 
 
-# ---------------------------------------------------------------------
-# Funciones auxiliares
-# ---------------------------------------------------------------------
 
 def fecha_texto(fecha):
     return fecha.strftime(FORMATO_FECHA)
@@ -214,9 +184,6 @@ def sugerencia_erronea(categoria, prioridad):
     return categoria, otra_prioridad, round(random.uniform(0.6, 0.9), 2)
 
 
-# ---------------------------------------------------------------------
-# Carga de datos
-# ---------------------------------------------------------------------
 
 def crear_colegio(conexion, semanas):
     cursor = conexion.execute(
@@ -231,7 +198,6 @@ def crear_colegio(conexion, semanas):
                               "tecnico", "tecnico123", "tecnico@colegio-demo.example")
     responsables = [(encargado_id, "Marcela Ibáñez"), (tecnico_id, "Rodrigo Campos")]
 
-    # Equipos activos con su QR
     equipos = []
     for numero, (nombre, tipo, ubicacion, marca, anio) in enumerate(EQUIPOS_COLEGIO, start=1):
         codigo = f"COL-{numero:03d}"
@@ -246,7 +212,6 @@ def crear_colegio(conexion, semanas):
         )
         equipos.append({"id": cursor.lastrowid, "codigo": codigo, "nombre": nombre, "tipo": tipo})
 
-    # Equipos dados de baja (reporte Ley REP)
     for codigo, nombre, tipo, motivo in (
         ("COL-026", "Computador antiguo Laboratorio", "Computador", "Placa madre dañada, reparación no conveniente"),
         ("COL-027", "Impresora matriz Secretaría", "Impresora", "Obsoleta, sin repuestos"),
@@ -260,7 +225,6 @@ def crear_colegio(conexion, semanas):
             (organizacion_id, codigo, nombre, tipo, semanas["S8"].date().isoformat(), motivo)
         )
 
-    # 30 usuarios solicitantes (algunos dejaron un contacto)
     solicitantes = []
     for numero, nombre in enumerate(USUARIOS_COLEGIO):
         email = f"usuario{numero + 1}@colegio-demo.example" if numero % 3 == 0 else None
@@ -274,14 +238,12 @@ def crear_colegio(conexion, semanas):
         )
         solicitantes.append(cursor.lastrowid)
 
-    # Se reparte cada ticket del piloto en su semana y su equipo
     tickets_por_semana = {semana: [] for semana in PLAN_SEMANAS}
 
     for indice, semanas_tickets, _ in EQUIPOS_CON_ALERTA:
         for semana in semanas_tickets:
             tickets_por_semana[semana].append(equipos[indice])
 
-    # Los demás equipos tienen como máximo 2 tickets (no generan alerta)
     otros = [equipo for equipo in equipos[len(EQUIPOS_CON_ALERTA):] for _ in range(2)]
     random.shuffle(otros)
 
@@ -290,8 +252,7 @@ def crear_colegio(conexion, semanas):
             tickets_por_semana[semana].append(otros.pop() if otros else None)
         random.shuffle(tickets_por_semana[semana])
 
-    # Tickets del piloto
-    tickets_creados = []  # (ticket_id, equipo, fecha_creacion)
+    tickets_creados = []  
 
     for semana, plan in PLAN_SEMANAS.items():
         lista = tickets_por_semana[semana]
@@ -304,7 +265,6 @@ def crear_colegio(conexion, semanas):
             prioridad = random.choices(["Alta", "Media", "Baja"], weights=[1, 2, 1])[0]
             creacion = momento_en_semana(semanas[semana])
 
-            # Sugerencia del clasificador: las primeras se aceptaron sin cambios
             if posicion < plan["ia_aceptadas"]:
                 sugerida, prioridad_sugerida = categoria, prioridad
                 confianza = round(random.uniform(0.67, 1.0), 2)
@@ -349,7 +309,6 @@ def crear_colegio(conexion, semanas):
             ticket_id = insertar_ticket(conexion, datos)
             tickets_creados.append((ticket_id, equipo, creacion))
 
-            # Historial de cambios para la trazabilidad
             registrar_cambio(conexion, ticket_id, creacion + timedelta(minutes=20),
                              "responsable", "Sin asignar", responsable_nombre)
             registrar_cambio(conexion, ticket_id, creacion + timedelta(minutes=25),
@@ -364,7 +323,6 @@ def crear_colegio(conexion, semanas):
             if resuelto:
                 registrar_cambio(conexion, ticket_id, cierre, "estado", "En proceso", "Resuelto")
 
-    # Alertas preventivas: se crean al registrarse la 3.a falla del equipo
     for indice, _, revisada in EQUIPOS_CON_ALERTA:
         equipo = equipos[indice]
         fechas = sorted(fecha for _, eq, fecha in tickets_creados if eq is equipo)
@@ -386,7 +344,6 @@ def crear_colegio(conexion, semanas):
             )
         )
 
-    # Los 2 equipos que se repararon en vez de reemplazarse (impacto del informe)
     solucion_reparacion = (
         "Revisión preventiva por alerta: se cambió la fuente de poder y se limpió "
         "el equipo. Se reparó en vez de reemplazarlo."
@@ -403,7 +360,6 @@ def crear_colegio(conexion, semanas):
             (solucion_reparacion, equipos[indice]["id"])
         )
 
-    # Incidencias que llegaron por WhatsApp, correo o verbal (K3)
     for semana, plan in PLAN_SEMANAS.items():
         for _ in range(plan["externas"]):
             conexion.execute(
@@ -417,7 +373,6 @@ def crear_colegio(conexion, semanas):
                 )
             )
 
-    # Tickets de la semana actual (para ver los avisos de plazo y "Por clasificar")
     actuales = [
         ("El proyector no enciende y hay clase en 10 minutos", "Hardware", "Alta", 3.5, equipos[12]),
         ("Necesito instalar el programa de notas", "Software", "Media", 1, equipos[8]),
@@ -522,7 +477,6 @@ def main():
     init_db()
     conexion = conectar()
 
-    # S7, S8 y S9 son las tres semanas anteriores a la actual
     periodos = ultimas_semanas(4)[:3]
     semanas = {
         nombre: texto_a_fecha(f"{desde} 00:00:00")
