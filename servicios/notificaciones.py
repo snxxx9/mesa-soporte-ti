@@ -1,18 +1,3 @@
-"""
-Envío de avisos por correo y enlaces de WhatsApp.
-
-La configuración del correo se lee desde variables de entorno para no
-dejar contraseñas escritas en el código:
-
-    SMTP_SERVIDOR     ejemplo: smtp.gmail.com
-    SMTP_PUERTO       ejemplo: 587
-    SMTP_USUARIO      cuenta que envía el correo
-    SMTP_CLAVE        contraseña o clave de aplicación
-
-Si no están configuradas, el aviso solo se muestra en la consola y la
-aplicación sigue funcionando normalmente.
-"""
-
 import os
 import re
 import smtplib
